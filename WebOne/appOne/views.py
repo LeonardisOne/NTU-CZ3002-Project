@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 #make sure you have form name whenever you are dealing with form.
 # Create your views here.
+@login_required
 def index(request):
     return render(request, 'appOne/index.html')
 
