@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfileInfo
+from .models import UserProfileInfo, Module
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -13,3 +13,9 @@ class UserProfileInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfileInfo
         fields = ('portfolio_site','profile_pic')
+
+class AddModuleForm(forms.ModelForm):
+    class Meta:
+        model = Module
+        fields = '__all__'
+        labels = {'module_name': 'Name of module'}

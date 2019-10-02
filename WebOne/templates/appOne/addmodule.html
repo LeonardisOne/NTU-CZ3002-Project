@@ -1,0 +1,20 @@
+{% extends "appOne/base.html" %}
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h1>Add module</h1>
+        <h3>Details about the new module.</h3>
+
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="" value="Add Module">
+        </form>
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from .forms import UserForm, UserProfileInfoForm
+from .forms import *
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 # below is deprecated
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 #make sure you have form name whenever you are dealing with form.
 # Create your views here.
@@ -83,3 +83,21 @@ def user_login(request):
 
     else:
         return render(request,'appOne/login.html',{})
+
+@permission_required('appOne.add_module', raise_exception=True)
+def add_module(request):
+    if request.method == 'POST':
+        form = AddModuleForm(request.POST)
+
+        if form.is_valid():
+            module = form.save()
+            module.save()
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = AddModuleForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'appOne/addmodule.html', context)
