@@ -4,13 +4,13 @@
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
-        <h1>Add Module</h1>
-        <h3>Details about the new module.</h3>
+        <h1>Add Chapter</h1>
+        <h3>Details about the new Chapter.</h3>
 
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
           {{ form.as_p }}
-          <input type="submit" name="" value="Add Module">
+          <input type="submit" name="" value="Add Chapter">
         </form>
 
     </div>

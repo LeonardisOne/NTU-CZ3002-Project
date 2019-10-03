@@ -14,6 +14,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 def index(request):
     return render(request, 'appOne/index.html')
 
+# @permission_required('appOne.add_module', raise_exception=True)
+# def prof_page(request):
+#     return render(request, 'appOne/prof.html')
+
 @login_required
 def special(request):
     return HttpResponse("You are logged in, Nice!")
@@ -26,9 +30,7 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def register(request):
-
     registered = False
-
     if request.method == "POST":
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileInfoForm(data=request.POST)
@@ -71,6 +73,13 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
+                # if is_member(user,'Professors'):
+                if user.groups.filter(name = 'Professors').exists():
+                    return prof_page(request)
+
+                elif user.groups.filter(name = 'Students').exists():
+                    return student_page(request)
+
                 return HttpResponseRedirect(reverse('index')) #back to home page
 
             else:
@@ -84,7 +93,7 @@ def user_login(request):
     else:
         return render(request,'appOne/login.html',{})
 
-@permission_required('appOne.add_module', raise_exception=True)
+
 def add_module(request):
     if request.method == 'POST':
         form = AddModuleForm(request.POST)
@@ -93,11 +102,37 @@ def add_module(request):
             module = form.save()
             module.save()
 
-            return HttpResponseRedirect(reverse('index'))
+            # return HttpResponseRedirect(reverse('index'))
+            return render(request,'appOne/manage_module.html',{})
     else:
         form = AddModuleForm()
 
     context = {
         'form': form,
     }
+
     return render(request, 'appOne/addmodule.html', context)
+
+def add_chapter(request):
+    if request.method == 'POST':
+        form = AddChapterForm(request.POST)
+
+        if form.is_valid():
+            chapter = form.save()
+            chapter.save()
+
+
+def manage_module(request):
+    return render(request,'appOne/manage_module.html',{})
+
+def manage_chapter(request):
+    return render(request,'appOne/manage_chapter.html',{})
+
+# def view_module(request):
+#     return render(request,'appOne/view_module.html',{})
+
+def prof_page(request):
+    return render(request,'appOne/prof.html',{})
+
+def student_page(request):
+    return render(request,'appOne/student.html',{})

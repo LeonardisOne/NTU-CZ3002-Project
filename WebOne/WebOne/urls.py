@@ -24,4 +24,5 @@ urlpatterns = [
     path('appOne/',include('appOne.urls')),
     path('logout/',views.user_logout,name='logout'),
     path('special/',views.special,name='special'),
+    # path('prof/',views.prof_page, name='prof'),
 ]

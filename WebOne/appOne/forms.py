@@ -19,3 +19,10 @@ class AddModuleForm(forms.ModelForm):
         model = Module
         fields = '__all__'
         labels = {'module_name': 'Name of module'}
+
+
+class AddChapterForm(forms.ModelForm):
+    class Meta:
+        model = Module
+        fields = '__all__'
+        labels = {'chapter_name': 'Name of chapter'}

@@ -1,0 +1,12 @@
+{% extends "appOne/base.html" %}
+{% load staticfiles %}
+
+{% block nav_bar %}
+{% endblock %}
+
+{% block body_block %}
+<li><p style="text-align:right"><a href="{% url 'appOne:add_module'%}">Add module</a></p></li>
+<li><a href="{% url 'appOne:manage_chapter'%}">CZ3002 - ASE</a></li>
+<li><a href="{% url 'appOne:manage_chapter'%}">CZ3003 - SSAD</a></li>
+<li><a href="{% url 'appOne:manage_chapter'%}">CZ2006 - SE </a></li>
+{% endblock %}

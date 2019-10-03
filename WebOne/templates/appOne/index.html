@@ -4,11 +4,13 @@
 <div class="container">
   <div class="jumbotron">
     <h1>WELCOME TO LEONARDISONE!</h1>
-    {% if user.is_authenticated%}
+    {% if user.is_authenticated %}
       <h2>WELCOME {{ user.username}}!</h2>
     {% else %}
       <h2>Please Login to LEONARDISONE</h2>
     {% endif %}
+
+
   </div>
 </div>
 
