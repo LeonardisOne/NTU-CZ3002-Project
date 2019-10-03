@@ -23,7 +23,10 @@
             <li><a class="navbar-link" href="{% url 'appOne:user_login'%}">Login</a></li>
             <!-- <li><a class="navbar-link" href="{% url 'appOne:register' %}">Register</a></li> -->
             {% endif %}
-
+            {% block nav_bar %}
+          {% endblock %}
+          <!-- <li><a class="navbar-brand" href="{% url 'appOne:manage_module'%}">Manage Module</a></li>
+          <li><a class="navbar-brand" href="{% url 'appOne:manage_chapter'%}">Manage Chapter</a></li> -->
         </ul>
       </div>
     </nav>

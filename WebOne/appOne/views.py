@@ -71,6 +71,13 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
+
+                if user.groups.filter(name = 'Professors').exists():
+                    return prof_page(request)
+
+                elif user.groups.filter(name = 'Students').exists():
+                    return student_page(request)
+
                 return HttpResponseRedirect(reverse('index')) #back to home page
 
             else:
@@ -93,7 +100,8 @@ def add_module(request):
             module = form.save()
             module.save()
 
-            return HttpResponseRedirect(reverse('index'))
+            #return HttpResponseRedirect(reverse('index'))
+            return render(request,'appOne/manage_module.html',{})
     else:
         form = AddModuleForm()
 
@@ -107,13 +115,11 @@ def add_chapter(request, pk):
     module_stored = get_object_or_404(Module, module_name=pk)
     if request.method == 'POST':
         form = AddChapterForm(request.POST)
-        print('before valid check')
 
         if form.is_valid():
             chapter = form.save(commit=False)
             chapter.module = module_stored
             chapter.save()
-            print('after valid check')
 
             return HttpResponseRedirect(reverse('index'))
     else:
@@ -124,3 +130,18 @@ def add_chapter(request, pk):
         'module': module_stored
     }
     return render(request, 'appOne/addchapter.html', context)
+
+def manage_module(request):
+    return render(request,'appOne/manage_module.html',{})
+
+def manage_chapter(request):
+    return render(request,'appOne/manage_chapter.html',{})
+
+# def view_module(request):
+#     return render(request,'appOne/view_module.html',{})
+
+def prof_page(request):
+    return render(request,'appOne/prof.html',{})
+
+def student_page(request):
+    return render(request,'appOne/student.html',{})
