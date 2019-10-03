@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfileInfo, Module
+from .models import *
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -19,3 +19,10 @@ class AddModuleForm(forms.ModelForm):
         model = Module
         fields = '__all__'
         labels = {'module_name': 'Name of module'}
+
+class AddChapterForm(forms.ModelForm):
+    class Meta:
+        model = Chapter
+        exclude = ['module']
+        labels = {'chapter_name': 'Name of chapter', 
+                    'chapter_desc': 'Description'}

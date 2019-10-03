@@ -19,7 +19,7 @@ class Module(models.Model):
     module_name = models.CharField(max_length=50)
 
     class Meta:
-        permissions = (("can_modify_module", "Can create/delete a module"),)
+        permissions = (("can_modify_module", "Can create/delete a module"),)#placeholder
 
     def __str__(self):
         return self.module_name
@@ -27,10 +27,11 @@ class Module(models.Model):
 class Chapter(models.Model):
 
     chapter_name = models.CharField(max_length=50)
+    chapter_desc = models.CharField(max_length=100, default= 'Description')
     module = models.ForeignKey('Module', on_delete=models.CASCADE)
 
     class Meta:
-        permissions = (("can_modify_chapter", "Can create/delete a chapter"),)
+        permissions = (("can_modify_chapter", "Can create/delete a chapter"),)#placeholder
 
     def __str__(self):
         return self.chapter_name

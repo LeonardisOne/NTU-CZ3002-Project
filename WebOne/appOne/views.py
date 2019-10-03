@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import *
 
 from django.contrib.auth import authenticate, login, logout
@@ -101,3 +101,26 @@ def add_module(request):
         'form': form,
     }
     return render(request, 'appOne/addmodule.html', context)
+
+@permission_required('appOne.add_chapter', raise_exception=True)
+def add_chapter(request, pk):
+    module_stored = get_object_or_404(Module, module_name=pk)
+    if request.method == 'POST':
+        form = AddChapterForm(request.POST)
+        print('before valid check')
+
+        if form.is_valid():
+            chapter = form.save(commit=False)
+            chapter.module = module_stored
+            chapter.save()
+            print('after valid check')
+
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = AddChapterForm()
+
+    context = {
+        'form': form,
+        'module': module_stored
+    }
+    return render(request, 'appOne/addchapter.html', context)
