@@ -145,8 +145,12 @@ def manage_chapter(request, pk):
 #     return render(request,'appOne/view_module.html',{})
 
 def prof_page(request):
-    module_list = Module.objects.filter(coordinator=request.user)
+    prof = Professor.objects.get(user=request.user)
+    module_list = Module.objects.filter(coordinator=prof)
     return render(request,'appOne/prof.html',{'module_list': module_list})
 
 def student_page(request):
-    return render(request,'appOne/student.html',{})
+    student = Student.objects.get(user=request.user)
+    print(student)
+    modules_taken = student.modules_taken.all()
+    return render(request,'appOne/student.html',{'modules_taken': modules_taken})
