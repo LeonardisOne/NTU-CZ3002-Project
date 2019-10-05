@@ -9,7 +9,7 @@ urlpatterns = [
     path('add_module/', views.add_module, name = 'add_module'),
     path('modules/<str:pk>/addchapter/', views.add_chapter, name = 'add_chapter'),
     path('manage_module/', views.manage_module, name = 'manage_module'),
-    path('manage_chapter/',views.manage_chapter, name = 'manage_chapter'),
+    path('modules/<str:pk>/manage_chapter/',views.manage_chapter, name = 'manage_chapter'),
     path('prof/',views.prof_page, name = 'prof_page'),
     path('student/',views.student_page, name = 'student_page'),
 ]

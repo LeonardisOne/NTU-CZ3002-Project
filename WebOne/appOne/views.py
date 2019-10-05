@@ -131,11 +131,15 @@ def add_chapter(request, pk):
     }
     return render(request, 'appOne/addchapter.html', context)
 
+@permission_required('appOne.change_module', raise_exception=True)
 def manage_module(request):
     return render(request,'appOne/manage_module.html',{})
 
-def manage_chapter(request):
-    return render(request,'appOne/manage_chapter.html',{})
+@permission_required('appOne.change_chapter', raise_exception=True)
+def manage_chapter(request, pk):
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_list = Chapter.objects.filter(module=module_stored)
+    return render(request,'appOne/manage_chapter.html',{'chapter_list': chapter_list})
 
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
