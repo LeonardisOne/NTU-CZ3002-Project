@@ -17,6 +17,7 @@ class UserProfileInfo(models.Model):
 class Module(models.Model):
 
     module_name = models.CharField(max_length=50)
+    coordinator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         permissions = (("can_modify_module", "Can create/delete a module"),)#placeholder

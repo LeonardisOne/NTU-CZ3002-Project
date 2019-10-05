@@ -5,3 +5,15 @@
 <li><a class="navbar-link" href="{% url 'appOne:manage_module'%}">Manage Module</a></li>
 <!-- <li><a class="navbar-link" href="{% url 'appOne:manage_chapter'%}">Manage Chapter</a></li> -->
 {% endblock %}
+{% block body_block %}
+<div class="container">
+    <div class="jumbotron">
+        <h1>List of modules</h1>
+            {% for module in module_list %}
+                <tr>
+                    <td>{{module.module_name}}</td>
+                </tr>
+            {% endfor %}
+    </div>
+  </div>
+{% endblock %}
