@@ -14,16 +14,22 @@ class UserProfileInfo(models.Model):
     def __str__(self):
         return self.user.username
 
+class Professor(UserProfileInfo):
+    prof_title = models.CharField(max_length=30)
+
 class Module(models.Model):
 
     module_name = models.CharField(max_length=50)
-    coordinator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    coordinator = models.ForeignKey('Professor', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         permissions = (("can_modify_module", "Can create/delete a module"),)#placeholder
 
     def __str__(self):
         return self.module_name
+
+class Student(UserProfileInfo):
+    modules_taken = models.ManyToManyField(Module)
 
 class Chapter(models.Model):
 
