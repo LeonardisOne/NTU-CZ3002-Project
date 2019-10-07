@@ -12,4 +12,5 @@ urlpatterns = [
     path('modules/<str:pk>/manage_chapter/',views.manage_chapter, name = 'manage_chapter'),
     path('prof/',views.prof_page, name = 'prof_page'),
     path('student/',views.student_page, name = 'student_page'),
+    path('chat/', views.chat, name = 'chat'),
 ]

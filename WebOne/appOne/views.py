@@ -8,6 +8,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 
+
+import firebase_admin
+from firebase_admin import auth, credentials
+
+cred = credentials.Certificate("../cz3002-firebase-adminsdk-zn2kj-457d20ac3e.json")
+firechat_app = firebase_admin.initialize_app(cred)
+
 #make sure you have form name whenever you are dealing with form.
 # Create your views here.
 @login_required
@@ -154,3 +161,21 @@ def student_page(request):
     print(student)
     modules_taken = student.modules_taken.all()
     return render(request,'appOne/student.html',{'modules_taken': modules_taken})
+
+#import json
+
+@login_required
+def chat(request):
+    uid = request.user.username
+    try:
+        auth.create_user(uid=uid)
+        print("add user")
+    except:
+        print("Existing user")
+    custom_token = (auth.create_custom_token(uid)).decode()
+
+    context = {
+        'custom_token': custom_token,
+    }
+
+    return render(request, 'appOne/chat.html', context)
