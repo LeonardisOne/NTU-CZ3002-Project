@@ -33,8 +33,8 @@ class Student(UserProfileInfo):
 
 class Chapter(models.Model):
 
-    chapter_name = models.CharField(max_length=50)
-    chapter_desc = models.CharField(max_length=100, default= 'Description')
+    chapter_name = models.CharField(max_length=50,default="")
+    chapter_desc = models.CharField(max_length=100)
     module = models.ForeignKey('Module', on_delete=models.CASCADE)
 
     class Meta:
@@ -42,3 +42,32 @@ class Chapter(models.Model):
 
     def __str__(self):
         return self.chapter_name
+
+class Question(models.Model):
+
+    question_name = models.CharField(max_length=500) #Question statement
+    question_optionA = models.CharField(max_length=100)
+    question_optionB = models.CharField(max_length=100)
+    question_optionC = models.CharField(max_length=100)
+    question_optionD = models.CharField(max_length=100)
+
+    chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
+
+    class Meta:
+        permissions = (("can_modify_question","Can create/delete a question"),)
+
+    def __str__(self):
+        return self.question_name
+
+class Solution(models.Model):
+
+    solution_name = models.CharField(max_length=50) #solution_name is the solution to certain question.
+    solution_answer = models.CharField(max_length=50)
+    solution_explanation = models.CharField(max_length=50)
+
+    question = models.ForeignKey('Question',on_delete=models.CASCADE)
+    class Meta:
+        permissions = (("can_modify_solution","Can create/delete a solution"),)
+
+    def __str__(self):
+        return self.solution_name

@@ -138,6 +138,29 @@ def add_chapter(request, pk):
     }
     return render(request, 'appOne/addchapter.html', context)
 
+@permission_required('appOne.add_question', raise_exception=True)
+def add_question(request, pq):
+    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
+    if request.method == 'POST':
+        form = AddQuestionForm(request.POST)
+
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.chapter = chapter_stored
+            question.save()
+
+            return HttpResponseRedirect(reverse('index'))
+
+    else:
+        form = AddQuestionForm()
+
+    context = {
+        'form': form,
+        'chapter': chapter_stored
+    }
+
+    return render(request, 'appOne/addquestion.html', context)
+
 @permission_required('appOne.change_module', raise_exception=True)
 def manage_module(request):
     return render(request,'appOne/manage_module.html',{})
@@ -148,6 +171,11 @@ def manage_chapter(request, pk):
     chapter_list = Chapter.objects.filter(module=module_stored)
     return render(request,'appOne/manage_chapter.html',{'chapter_list': chapter_list})
 
+@permission_required('appOne.change_question', raise_exception=True)
+def manage_question(request, pq):
+    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
+    question_list = Question.objects.filter(chapter=chapter_stored)
+    return render(request, 'appOne/manage_question.html',{'question_list': question_list})
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
 

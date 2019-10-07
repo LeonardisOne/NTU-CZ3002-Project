@@ -1,0 +1,20 @@
+{% extends "appOne/base.html" %}
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h1>Add Question to {{ chapter.chapter_name }}</h1>
+        <h3>Details about the new question to add to chapter.</h3>
+
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="" value="Add Question">
+        </form>
+
+    </div>
+
+  </div>
+
+{% endblock %}
