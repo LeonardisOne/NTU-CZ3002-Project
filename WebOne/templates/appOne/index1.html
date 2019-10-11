@@ -1,0 +1,596 @@
+{% extends 'appOne/base.html' %}
+
+{% load staticfiles %}
+<!--
+<head>
+	<title>Search </title>
+      <link href = "style.css" rel = "stylesheet">
+       <link rel="stylesheet" href="{% static 'Homepage/css/style.css' %}" type='text/css' />
+</head>
+<body>
+	<div class = "header">
+		<form>
+			<h1> Search </h1>
+			<div class = "form-box">
+				<input type="text" class = "search-field" placeolder = "Search">
+				<button class ="search-btn" type ="button"> Search </button>
+			</div>
+		</form>
+	</div>
+</body>
+-->
+
+{% block body_block %}
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cardo" />
+    
+    <!--<link rel="stylesheet" href="{% static 'Homepage/css/style.css' %}" type='text/css' />-->
+    
+    <style>
+        .h1{
+            font-size: 18px
+        }
+        img{
+            max-width: 100%;
+        }
+        .sub-title{
+            font-family: 'Cardo';
+            font-weight: bold;
+            font-size: 18px;
+            text-align: top;
+        }
+
+        .title {
+            line-height: 70px;
+            font-family:'Montserrat';
+            font-size: 45px;
+            color: #A38979;
+            font-weight:bold;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .description{
+            font-family: 'Cardo';
+            font-size: 15px;
+            padding: 0px 30px;
+            line-height: 25px;
+        }
+
+        .flex-container {
+            max-height: 700px;
+            height: 220px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            background-color: aquamarine;
+            transition: all 1s;
+            overflow: hidden;
+        }
+        
+        .expand {
+            height: 1000px;
+        }
+
+        .box {
+            position: relative;
+            max-width: 150px;
+            max-height: 200px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 5px;
+            overflow: hidden;
+            text-align:center;
+            box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+        }
+
+        .flex-text{
+            padding: 25px 25px 15px 25px;
+            text-align: left;
+            background-color: floralwhite;
+        }
+
+
+        .flex-btn
+        {
+            display: block;
+            background: none;
+            border: 2px solid #FFCCAD;
+            outline: none;
+            border-radius: 50px;
+            padding: 10px 30px;
+            margin: 10px auto;
+            cursor: pointer;
+            vertical-align: middle;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.4s ease 0s;
+        }
+
+        .box .flex-container-btn
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            transition: all .75s;
+            background-color: hsla(180, 93%, 50%, 0.18);
+            opacity: 0;
+        }
+
+        .flex-container-btn:hover {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .box:hover .flex-container-btn{
+            opacity: 1;
+        }
+
+        .flex-btn:hover
+        {
+            background: #A38979;
+            letter-spacing: 1px;
+            -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+            -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+            box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        }
+
+
+        button, a, a:hover, a:active, a:link , .link, .link:hover
+        {
+            color: #FFCCAD;
+            text-decoration: none;
+            font-family: 'Cardo';
+            font-size: 16px;
+        }
+        
+        .center{
+            display: block;
+            padding: 20px;
+            width: 100%;
+            margin: auto;
+            text-align: center;
+        }
+        
+        .module{
+            font-size: 20px;
+            text-align: center;
+        }
+        .addChap{
+            background-color:chartreuse;
+        }
+    </style>
+</head>
+<script>
+function display()
+{
+   var drop = document.getElementById("drop");
+   drop.classList.toggle('expand');
+}
+</script>
+<body>
+    <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input class="addChap" type="submit" name="" value="+ Add Chapter">
+    </form>
+    <h1 class= "module"><u>CZ3003 Artificial Intelligence</u></h1>
+    <div class="flex-container" id="drop">
+      <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 1</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 2</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 3</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 4</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 5</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 6</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 7</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 8</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 9</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+    </div>
+    
+     <h1 class= "module"><u>CZ3001 Advanced Architecture</u></h1>
+    <div class="flex-container" id="drop">
+      <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 1</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 2</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 3</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 4</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 5</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 6</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 7</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 8</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+        <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">Chapter 9</p>
+              <hr>
+              <p> Intro to AI </p>
+              <p> Date: 10/09/2019 </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
+      </div>
+    </div>
+    
+    <div class="center">
+    <button onclick="display()">see more</button>
+    </div>
+    
+</body>
+</html>
+{% endblock %}

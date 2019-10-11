@@ -24,4 +24,5 @@ urlpatterns = [
     path('appOne/',include('appOne.urls')),
     path('logout/',views.user_logout,name='logout'),
     path('special/',views.special,name='special'),
+    path('index1/',views.index1,name='index1'),
 ]

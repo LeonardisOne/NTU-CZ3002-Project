@@ -21,6 +21,10 @@ firechat_app = firebase_admin.initialize_app(cred)
 def index(request):
     return render(request, 'appOne/index.html')
 
+def index1(request):
+    return render(request, 'appOne/index1.html')
+
+
 @login_required
 def special(request):
     return HttpResponse("You are logged in, Nice!")
@@ -138,29 +142,6 @@ def add_chapter(request, pk):
     }
     return render(request, 'appOne/addchapter.html', context)
 
-@permission_required('appOne.add_question', raise_exception=True)
-def add_question(request, pk, pq):
-    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
-    if request.method == 'POST':
-        form = AddQuestionForm(request.POST)
-
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.chapter = chapter_stored
-            question.save()
-
-            return HttpResponseRedirect(reverse('index'))
-
-    else:
-        form = AddQuestionForm()
-
-    context = {
-        'form': form,
-        'chapter': chapter_stored
-    }
-
-    return render(request, 'appOne/addquestion.html', context)
-
 @permission_required('appOne.change_module', raise_exception=True)
 def manage_module(request):
     return render(request,'appOne/manage_module.html',{})
@@ -171,11 +152,6 @@ def manage_chapter(request, pk):
     chapter_list = Chapter.objects.filter(module=module_stored)
     return render(request,'appOne/manage_chapter.html',{'chapter_list': chapter_list})
 
-@permission_required('appOne.change_question', raise_exception=True)
-def manage_question(request, pk, pq):
-    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
-    question_list = Question.objects.filter(chapter=chapter_stored)
-    return render(request, 'appOne/manage_question.html',{'question_list': question_list})
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
 
@@ -188,7 +164,7 @@ def student_page(request):
     student = Student.objects.get(user=request.user)
     print(student)
     modules_taken = student.modules_taken.all()
-    return render(request,'appOne/student.html',{'modules_taken': modules_taken})
+    return render(request,'appOne/index1.html',{'modules_taken': modules_taken})
 
 #import json
 

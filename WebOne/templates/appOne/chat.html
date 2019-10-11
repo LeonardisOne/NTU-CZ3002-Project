@@ -15,21 +15,7 @@
 
     <!-- Custom CSS -->
     <style>
-      /* Button used to open the chat form - fixed at the bottom of the page */
-      .open-button {
-        background-color: #555;
-        color: white;
-        padding: 16px 20px;
-        border: none;
-        cursor: pointer;
-        opacity: 0.8;
-        position: fixed;
-        bottom: 23px;
-        right: 28px;
-        width: 280px;
-      }
       #firechat-wrapper {
-        display: none;
         height: 475px;
         max-width: 325px;
         padding: 10px;
@@ -43,10 +29,6 @@
         -webkit-box-shadow: 0 5px 25px #666;
         -moz-box-shadow: 0 5px 25px #666;
         box-shadow: 0 5px 25px #666;
-        position: fixed;
-        bottom: 23px;
-        right: 28px;
-        width: 280px;
       }
     </style>
   </head>
@@ -65,12 +47,8 @@
       4. Update the room id for auto-entry with a public room you have created
    -->
   <body>
-    <button class="open-button" onclick="openForm()">Chat</button>
     <div id="firechat-wrapper"></div>
     <script type="text/javascript">
-      function openForm() {
-        document.getElementById("firechat-wrapper").style.display = "block";
-      }
       // Initialize Firebase SDK
       var firebaseConfig = {
                 apiKey: "AIzaSyC1SSbgF0CK-SaJ7wbbCMZho2UGaAA2qR0",

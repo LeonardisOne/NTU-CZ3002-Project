@@ -24,16 +24,5 @@ class AddChapterForm(forms.ModelForm):
     class Meta:
         model = Chapter
         exclude = ['module']
-        labels = {'chapter_name': 'Name of chapter',
+        labels = {'chapter_name': 'Name of chapter', 
                     'chapter_desc': 'Description'}
-
-class AddQuestionForm(forms.ModelForm):
-    class Meta:
-        model = Question
-        # fields = '__all__'
-        exclude = ['chapter']
-        labels = {'question_name' : 'Question statement',
-                    'question_optionA': 'Option A',
-                    'question_optionB': 'Option B',
-                    'question_optionC': 'Option C',
-                    'question_optionD': 'Option D' }
