@@ -47,7 +47,7 @@ class Chapter(models.Model):
     end_datetime = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        permissions = (("can_modify_chapter", "Can create/delete a chapter"),)#placeholder
+        permissions = (("can_publish_chapter", "Can publish a chapter"),)
 
     def __str__(self):
         return f"{str(self.module)} {self.chapter_name}"

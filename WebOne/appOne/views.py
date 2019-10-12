@@ -142,7 +142,8 @@ def add_chapter(request, pk):
 
 @permission_required('appOne.add_question', raise_exception=True)
 def add_question(request, pk, pq):
-    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=pq)
     if request.method == 'POST':
         form = AddQuestionForm(request.POST)
 
@@ -212,7 +213,8 @@ def manage_chapter(request, pk):
 
 @permission_required('appOne.change_question', raise_exception=True)
 def manage_question(request, pk, pq):
-    chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
     question_list = Question.objects.filter(chapter=chapter_stored)
     return render(request, 'appOne/manage_question.html',{'module_pk': pk, 'chapter_name': pq, 'question_list': question_list})
 # def view_module(request):
@@ -228,6 +230,31 @@ def student_page(request):
     print(student)
     modules_taken = student.modules_taken.all()
     return render(request,'appOne/student.html',{'modules_taken': modules_taken})
+
+@permission_required('appOne.can_publish_chapter', raise_exception=True)
+def publish_chapter(request, pk, pq):
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_published = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
+
+    if request.method == 'POST':
+        form = PublishChapterForm(request.POST)
+
+        if form.is_valid():
+            chapter_published.end_datetime = form.cleaned_data['end_datetime']
+            chapter_published.can_start = True
+            chapter_published.save()
+
+            return HttpResponseRedirect(reverse('index'))
+
+    else:
+        form = PublishChapterForm()
+
+    context = {
+        'form': form,
+        'chapter': chapter_published
+    }
+
+    return render(request, 'appOne/addquestion.html', context)
 
 #import json
 
