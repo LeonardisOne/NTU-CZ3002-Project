@@ -33,10 +33,13 @@ class Module(models.Model):
         return self.module_name
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 class Student(UserProfileInfo):
     modules_taken = models.ManyToManyField(Module)
 
 
+=======
+>>>>>>> 53a459e9076082038d100903d733116d676cac9d
 =======
 >>>>>>> 53a459e9076082038d100903d733116d676cac9d
 class Chapter(models.Model):
@@ -52,6 +55,17 @@ class Chapter(models.Model):
 
     def __str__(self):
         return f"{str(self.module)} {self.chapter_name}"
+
+class ChapterTeam(models.Model):
+    chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
+    team_name = models.CharField(max_length=20)
+
+    def _str_(self):
+        return self.team_name
+
+class Student(UserProfileInfo):
+    modules_taken = models.ManyToManyField(Module)
+    joined_teams = models.ManyToManyField(ChapterTeam)
 
 class ChapterTeam(models.Model):
     chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
