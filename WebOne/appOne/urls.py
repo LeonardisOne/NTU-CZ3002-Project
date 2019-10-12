@@ -15,4 +15,7 @@ urlpatterns = [
     path('prof/',views.prof_page, name = 'prof_page'),
     path('student/',views.student_page, name = 'student_page'),
     path('chat/', views.chat, name = 'chat'),
+    path('modules/delete_chapter/<module_pk>/<chapter_name>', views.delete_chapter, name="delete_chapter"),
+    path('modules/delete_question/<module_pk>/<chapter_name>/<question_name>',views.delete_question, name="delete_question"),
+    path('modules/delete_module/<module_pk>/',views.delete_module, name='delete_module'),
 ]

@@ -15,7 +15,11 @@ class UserProfileInfo(models.Model):
         return self.user.username
 
 class Professor(UserProfileInfo):
-    prof_title = models.CharField(max_length=30)
+    prof_title = UserProfileInfo.user
+
+    def __str__(self):
+        return self.prof_title.username
+
 
 class Module(models.Model):
 
@@ -28,20 +32,37 @@ class Module(models.Model):
     def __str__(self):
         return self.module_name
 
+<<<<<<< HEAD
 class Student(UserProfileInfo):
     modules_taken = models.ManyToManyField(Module)
 
+
+=======
+>>>>>>> 53a459e9076082038d100903d733116d676cac9d
 class Chapter(models.Model):
 
     chapter_name = models.CharField(max_length=50,default="")
     chapter_desc = models.CharField(max_length=100)
     module = models.ForeignKey('Module', on_delete=models.CASCADE)
+    can_start = models.BooleanField(default=False, null=True)
+    end_datetime = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         permissions = (("can_modify_chapter", "Can create/delete a chapter"),)#placeholder
 
     def __str__(self):
-        return self.chapter_name
+        return f"{str(self.module)} {self.chapter_name}"
+
+class ChapterTeam(models.Model):
+    chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
+    team_name = models.CharField(max_length=20)
+
+    def _str_(self):
+        return self.team_name
+
+class Student(UserProfileInfo):
+    modules_taken = models.ManyToManyField(Module)
+    joined_teams = models.ManyToManyField(ChapterTeam)
 
 class Question(models.Model):
 
@@ -57,7 +78,7 @@ class Question(models.Model):
         permissions = (("can_modify_question","Can create/delete a question"),)
 
     def __str__(self):
-        return self.question_name
+        return f"{str(self.chapter)} {self.question_name}"
 
 class Solution(models.Model):
 

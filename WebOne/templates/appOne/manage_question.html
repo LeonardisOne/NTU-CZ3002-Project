@@ -6,7 +6,8 @@
     <div class="jumbotron">
         <h1>List of Questions</h1>
           {% for question in question_list %}
-              <h3>{{question.question_name}}</h3>
+              <h3>{{question.question_name}} <a href="{% url 'appOne:delete_question' question_name=question.question_name chapter_name=chapter_name module_pk=module_pk %}">Delete</a></h3>
+
           {% endfor %}
     </div>
   </div>

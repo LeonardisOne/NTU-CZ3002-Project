@@ -6,8 +6,14 @@
     <div class="jumbotron">
         <h1>List of Chapters</h1>
           {% for chapter in chapter_list %}
-              <h3>{{chapter.chapter_name}}</h3>
+              <h3>{{chapter.chapter_name}} <a href="{% url 'appOne:delete_chapter' chapter_name=chapter.chapter_name module_pk=module_pk %}"> Delete </a> </h3>
+
           {% endfor %}
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="model-dailog">
+
+
     </div>
   </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
 
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +7,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
-
 
 import firebase_admin
 from firebase_admin import auth, credentials
@@ -104,9 +103,9 @@ def add_module(request):
         form = AddModuleForm(request.POST)
 
         if form.is_valid():
-            module = form.save()
+            module = form.save(commit=False)
             module.save()
-
+            print("Done")
             #return HttpResponseRedirect(reverse('index'))
             return render(request,'appOne/manage_module.html',{})
     else:
@@ -115,6 +114,7 @@ def add_module(request):
     context = {
         'form': form,
     }
+
     return render(request, 'appOne/addmodule.html', context)
 
 @permission_required('appOne.add_chapter', raise_exception=True)
@@ -128,7 +128,8 @@ def add_chapter(request, pk):
             chapter.module = module_stored
             chapter.save()
 
-            return HttpResponseRedirect(reverse('index'))
+            # return HttpResponseRedirect(reverse('index'))
+            return redirect(f'/appOne/modules/{pk}/manage_chapter/')
     else:
         form = AddChapterForm()
 
@@ -137,6 +138,7 @@ def add_chapter(request, pk):
         'module': module_stored
     }
     return render(request, 'appOne/addchapter.html', context)
+
 
 @permission_required('appOne.add_question', raise_exception=True)
 def add_question(request, pk, pq):
@@ -149,7 +151,8 @@ def add_question(request, pk, pq):
             question.chapter = chapter_stored
             question.save()
 
-            return HttpResponseRedirect(reverse('index'))
+            # return HttpResponseRedirect(reverse('index'))
+            return redirect(f'/appOne/modules/{pk}/chapters/{pq}/manage_question/')
 
     else:
         form = AddQuestionForm()
@@ -161,21 +164,57 @@ def add_question(request, pk, pq):
 
     return render(request, 'appOne/addquestion.html', context)
 
+@permission_required('appOne.delete_module', raise_exception=True)
+def delete_module(request, module_pk):
+    module_stored = Module.objects.get(module_name=module_pk)
+
+    module_stored.delete()
+
+    return redirect('/appOne/manage_module/')
+
+
+@permission_required('appOne.delete_chapter', raise_exception=True)
+def delete_chapter(request, module_pk, chapter_name):
+    print(module_pk)
+    print(chapter_name)
+
+    module_stored = get_object_or_404(Module, module_name=module_pk)
+    chapter_stored = Chapter.objects.get(module=module_stored, chapter_name=chapter_name)
+
+    print(chapter_stored)
+    chapter_stored.delete()
+    # return render(request, 'appOne/delete_chapter.html')
+    return redirect(f'/appOne/modules/{module_pk}/manage_chapter/')
+
+@permission_required('appOne.delete_question', raise_exception=True)
+def delete_question(request, module_pk, chapter_name, question_name):
+    print(module_pk)
+    print(chapter_name)
+
+    module_stored = get_object_or_404(Module, module_name=module_pk)
+    chapter_stored = get_object_or_404(Chapter, chapter_name=chapter_name)
+    question_stored = Question.objects.get(question_name=question_name)
+    question_stored.delete()
+
+    return redirect(f'/appOne/modules/{module_pk}/chapters/{chapter_name}/manage_question/')
+
 @permission_required('appOne.change_module', raise_exception=True)
 def manage_module(request):
-    return render(request,'appOne/manage_module.html',{})
+
+    module_list = Module.objects.filter()
+    return render(request,'appOne/manage_module.html',{'module_list':module_list})
 
 @permission_required('appOne.change_chapter', raise_exception=True)
 def manage_chapter(request, pk):
     module_stored = get_object_or_404(Module, module_name=pk)
     chapter_list = Chapter.objects.filter(module=module_stored)
-    return render(request,'appOne/manage_chapter.html',{'chapter_list': chapter_list})
+    return render(request,'appOne/manage_chapter.html',{'module_pk': pk, 'chapter_list': chapter_list})
 
 @permission_required('appOne.change_question', raise_exception=True)
 def manage_question(request, pk, pq):
     chapter_stored = get_object_or_404(Chapter, chapter_name=pq)
     question_list = Question.objects.filter(chapter=chapter_stored)
-    return render(request, 'appOne/manage_question.html',{'question_list': question_list})
+    return render(request, 'appOne/manage_question.html',{'module_pk': pk, 'chapter_name': pq, 'question_list': question_list})
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
 
