@@ -32,12 +32,6 @@ class Module(models.Model):
     def __str__(self):
         return self.module_name
 
-
-class Student(UserProfileInfo):
-    modules_taken = models.ManyToManyField(Module)
-
-
-
 class Chapter(models.Model):
 
     chapter_name = models.CharField(max_length=50,default="")
@@ -51,17 +45,6 @@ class Chapter(models.Model):
 
     def __str__(self):
         return f"{str(self.module)} {self.chapter_name}"
-
-class ChapterTeam(models.Model):
-    chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
-    team_name = models.CharField(max_length=20)
-
-    def _str_(self):
-        return self.team_name
-
-class Student(UserProfileInfo):
-    modules_taken = models.ManyToManyField(Module)
-    joined_teams = models.ManyToManyField(ChapterTeam)
 
 class ChapterTeam(models.Model):
     chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)

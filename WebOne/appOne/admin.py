@@ -9,5 +9,6 @@ admin.site.register(Student)
 class ChapterAdmin(admin.ModelAdmin):
     exclude = ('can_start',)
 
+admin.site.register(ChapterTeam)
 admin.site.register(Professor)
 admin.site.register(Question)

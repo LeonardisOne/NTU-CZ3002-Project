@@ -231,7 +231,7 @@ def student_page(request):
     modules_taken = student.modules_taken.all()
     return render(request,'appOne/student.html',{'modules_taken': modules_taken})
 
-@permission_required('appOne.can_publish_chapter', raise_exception=True)
+#@permission_required('appOne.can_publish_chapter', raise_exception=True)
 def publish_chapter(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
     chapter_published = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
@@ -241,6 +241,7 @@ def publish_chapter(request, pk, pq):
 
         if form.is_valid():
             chapter_published.end_datetime = form.cleaned_data['end_datetime']
+            print(chapter_published.end_datetime)
             chapter_published.can_start = True
             chapter_published.save()
 

@@ -1,9 +1,10 @@
 from django import forms
 from .models import *
 from django.contrib.auth.models import User
-import datetime
+#import datetime
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils.timezone import now
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -48,7 +49,7 @@ class PublishChapterForm(forms.Form):
         data = self.cleaned_data['end_datetime']
         
         # Raise error if the end date is in the past. 
-        if data < datetime.datetime.now():
+        if data < now():
             raise ValidationError(_('Invalid date - end date in the past'))
 
         # Return the cleaned data.
