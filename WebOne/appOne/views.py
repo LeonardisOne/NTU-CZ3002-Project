@@ -254,7 +254,7 @@ def publish_chapter(request, pk, pq):
         'chapter': chapter_published
     }
 
-    return render(request, 'appOne/addquestion.html', context)
+    return render(request, 'appOne/publish.html', context)
 
 #import json
 
