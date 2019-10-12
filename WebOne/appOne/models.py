@@ -32,16 +32,12 @@ class Module(models.Model):
     def __str__(self):
         return self.module_name
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 class Student(UserProfileInfo):
     modules_taken = models.ManyToManyField(Module)
 
 
-=======
->>>>>>> 53a459e9076082038d100903d733116d676cac9d
-=======
->>>>>>> 53a459e9076082038d100903d733116d676cac9d
+
 class Chapter(models.Model):
 
     chapter_name = models.CharField(max_length=50,default="")
