@@ -46,9 +46,16 @@ class Chapter(models.Model):
     def __str__(self):
         return f"{str(self.module)} {self.chapter_name}"
 
+class ChapterTeamManager(models.Manager):
+    def create_team(self, chapter, team_name):
+        team = self.create(chapter=chapter, team_name=team_name)
+        return team
+
 class ChapterTeam(models.Model):
     chapter = models.ForeignKey('Chapter', on_delete=models.CASCADE)
     team_name = models.CharField(max_length=20)
+
+    objects = ChapterTeamManager()
 
     def _str_(self):
         return self.team_name

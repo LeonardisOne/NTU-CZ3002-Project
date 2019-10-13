@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
+from .utilities import create_teams
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -242,8 +243,11 @@ def publish_chapter(request, pk, pq):
         if form.is_valid():
             chapter_published.end_datetime = form.cleaned_data['end_datetime']
             print(chapter_published.end_datetime)
+            alr_started = chapter_published.can_start
             chapter_published.can_start = True
             chapter_published.save()
+
+            create_teams(chapter_published, alr_started)
 
             return HttpResponseRedirect(reverse('index'))
 
