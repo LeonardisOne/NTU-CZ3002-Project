@@ -27,7 +27,7 @@ class AddModuleForm(forms.ModelForm):
 class AddChapterForm(forms.ModelForm):
     class Meta:
         model = Chapter
-        exclude = ['module', 'can_start']
+        exclude = ['module', 'can_start', 'end_datetime']
         labels = {'chapter_name': 'Name of chapter',
                     'chapter_desc': 'Description'}
 
