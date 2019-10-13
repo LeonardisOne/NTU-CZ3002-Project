@@ -29,8 +29,10 @@ def create_teams(chapter, alr_started):
             
             num_students -= min(5, num_students)
 
+        return team_list
         #debug statements
         """ a1 = ChapterTeam.objects.get(team_name = 'Team 1', chapter=chapter)
         print(a1.student_set.all()) """
     else:
         print('cannot create teams')#debug
+        return []

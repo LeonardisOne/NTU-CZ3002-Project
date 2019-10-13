@@ -10,10 +10,13 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 
 import firebase_admin
-from firebase_admin import auth, credentials
+from firebase_admin import auth, credentials, db
 
 cred = credentials.Certificate("../cz3002-firebase-adminsdk-zn2kj-457d20ac3e.json")
-firechat_app = firebase_admin.initialize_app(cred)
+firechat_app = firebase_admin.initialize_app(cred, {
+    'databaseURL' : 'https://cz3002.firebaseio.com/'
+})
+room_ref = db.reference('room-metadata')
 
 #make sure you have form name whenever you are dealing with form.
 # Create your views here.
@@ -247,7 +250,17 @@ def publish_chapter(request, pk, pq):
             chapter_published.can_start = True
             chapter_published.save()
 
-            create_teams(chapter_published, alr_started)
+            team_list = create_teams(chapter_published, alr_started)
+
+            for team in team_list:
+                new_room_ref = room_ref.push()
+                team.room_id = new_room_ref.key
+                team.save()
+                
+                new_room_ref.set({
+                    'name' : team.chapter.chapter_name + ' ' + team.team_name,
+                    'type' : 'public'
+                })
 
             return HttpResponseRedirect(reverse('index'))
 
