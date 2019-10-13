@@ -94,7 +94,10 @@
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // If the user is logged in, set them as the Firechat user
-          chat.setUser(user.uid, "Anonymous" + user.uid.substr(10, 8));
+          chat.setUser(user.uid, user.uid);
+          setTimeout(function() {
+            chat._chat.enterRoom("{{ room_id }}")
+          }, 500);
         } else {
           // If the user is not logged in, sign them in anonymously
           firebase.auth().signInAnonymously().catch(function(error) {

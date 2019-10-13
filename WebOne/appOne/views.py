@@ -231,7 +231,6 @@ def prof_page(request):
 
 def student_page(request):
     student = Student.objects.get(user=request.user)
-    print(student)
     modules_taken = student.modules_taken.all()
     return render(request,'appOne/student.html',{'modules_taken': modules_taken})
 
@@ -245,7 +244,7 @@ def publish_chapter(request, pk, pq):
 
         if form.is_valid():
             chapter_published.end_datetime = form.cleaned_data['end_datetime']
-            print(chapter_published.end_datetime)
+            print(chapter_published.end_datetime)#debug
             alr_started = chapter_published.can_start
             chapter_published.can_start = True
             chapter_published.save()
@@ -256,7 +255,7 @@ def publish_chapter(request, pk, pq):
                 new_room_ref = room_ref.push()
                 team.room_id = new_room_ref.key
                 team.save()
-                
+
                 new_room_ref.set({
                     'name' : team.chapter.chapter_name + ' ' + team.team_name,
                     'type' : 'public'
@@ -277,7 +276,10 @@ def publish_chapter(request, pk, pq):
 #import json
 
 @login_required
-def chat(request):
+def chat(request, pk, pq):
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
+    
     uid = request.user.username
     try:
         auth.create_user(uid=uid)
@@ -286,8 +288,13 @@ def chat(request):
         print("Existing user")
     custom_token = (auth.create_custom_token(uid)).decode()
 
+    student = Student.objects.get(user=request.user)
+    team = student.joined_teams.get(chapter=chapter_stored)
+    room_id = team.room_id
+
     context = {
         'custom_token': custom_token,
+        'room_id': room_id
     }
 
     return render(request, 'appOne/chat.html', context)
