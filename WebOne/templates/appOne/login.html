@@ -1,8 +1,8 @@
-{% extends 'appOne/base.html' %}
-{% block body_block %}
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8">
-    <title>ASE Assignment</title> 
+    <title>ASE Assignment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -27,13 +27,26 @@
                     </div>
 
                     <div class="form-group">
-                        <input id="password" name="password" type="text" class="form-control" placeholder="Password"/>
+                        <input id="password" name="password" type="password" class="form-control" placeholder="Password"/>
+                        Show Password <input type="checkbox" onclick="myFunction()">
                     </div>
-                
+
                     <input type="submit" name="login" value="Sign In" class="btn btn-warning"/>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+    function myFunction(){
+      var x = document.getElementById("password");
+      if(x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    </script>
 </body>
-{% endblock %}
+
+</html>

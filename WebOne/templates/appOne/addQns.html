@@ -1,0 +1,266 @@
+<!--
+{% extends "appOne/base.html" %}
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h1>Add chapter to {{ module.module_name }}</h1>
+        <h3>Details about the new chapter to add to module.</h3>
+
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="" value="Add Chapter">
+        </form>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<!--{% load staticfiles %}-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+<style>
+    html, body{
+        color: white;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        font-size: 17px;
+        background-size: cover;
+}
+
+    #form-bg{
+        color: black;
+    }
+
+    .container-fluid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+        border: 3px solid black;
+        border-radius: 50px;
+        background-color:darkgrey;
+    }
+
+    .col{
+        width: 40vw;
+    }
+
+    form{   
+        padding: 10px 30px;
+    }
+
+    .form-group{
+        display:block;
+        margin: 0px auto;
+        max-width: 250px;
+        
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        font-size: 25px;
+        text-decoration: underline;
+    }
+
+    span{
+        display: table-cell;
+        width: 300px;
+        padding: 20px;
+        border: 3px solid white;
+    }
+
+    #username, #password{
+        margin: 30px 0;
+    }
+
+    input {
+        text-align: center;
+        margin: 10px 0px;
+    }
+
+    .btn {
+        margin-top: 20px;
+        width: 150px;
+    }
+    .row{
+        height: inherit;
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col" id="form-bg">
+                <form id="form" name="form" method="post" action="phome.html">
+                  {% csrf_token %}
+                    
+<!--
+                    <h2 class="title">Details of Questions</h2>
+                    <br>
+                    <p>Question 1:</p>
+                    <div class="form-group">
+                        <input id="question" name="question" type="text" class="form-control" placeholder="E.g. What is my name?"/>
+                    </div>
+                    <p>Option 1</p>
+                    <div class="form-group">
+                        <input id="option1" name="option1" type="text" class="form-control" placeholder="E.g. Option 1"/>
+                    </div>
+                    <p>Option 2</p>
+                    <div class="form-group">
+                        <input id="prof" name="prof" type="text" class="form-control" placeholder="E.g. Prof Ken"/>
+                    </div>
+                    <p>Option 3</p>
+                    <div class="form-group">
+                        <input id="numquestion" name="numquestion" type="text" class="form-control" placeholder="E.g. 15"/>
+                    </div>
+                    
+                    <p>Option 4</p>
+                    <div class="form-group">
+                        <input id="numquestion" name="numquestion" type="text" class="form-control" placeholder="E.g. 15"/>
+                    </div>
+-->
+                
+                </form>
+            </div>
+        </div>
+    </div>     
+</body>
+    <script>
+//        <--! retrieve data for number of question -->
+    
+
+        //array for work
+        var question = [1,2];
+        
+        function displayForm(i)
+        {   
+            var h2 = document.createElement("h2");
+                h2.className = "title";
+                h2.innerHTML = "Questions List";
+            document.getElementById("form").appendChild(h2);
+            t = question.length;
+            
+            var add_button= document.createElement("input");
+                add_button.name = "addChap";
+                add_button.type="submit";
+                add_button.value="Add Questions";
+                add_button.class="btn btn-warning";
+            
+            
+            for (i=1; i < question.length + 1; i++)
+            {
+                
+                var p = document.createElement("p");
+                p.innerHTML = "Question " + [i];
+                
+                var div = document.createElement("div");
+                div.className = "form-group";
+
+                var input = document.createElement("input");
+                input.name = "question";   
+                input.id = "question_" + [i];
+                input.type = "text";
+                input.className = "form-control"
+                input.placeholder = "E.g. What is my name?";
+                
+                var p_Op_1 = document.createElement("p");
+                p_Op_1.innerHTML = "Option 1";
+                
+                var div_Op_1 = document.createElement("div");
+                div.className = "form-group";
+
+                var input_Op_1 = document.createElement("input");
+                input_Op_1.name = "option1";   
+                input_Op_1.id = "option_1";
+                input_Op_1.type = "text";
+                input_Op_1.className = "form-control"
+                input_Op_1.placeholder = "E.g. Option 1";
+                
+                var p_Op_2 = document.createElement("p");
+                p_Op_2.innerHTML = "Option 2";
+                
+                var div_Op_2 = document.createElement("div");
+                div_Op_2.className = "form-group";
+
+                var input_Op_2 = document.createElement("input");
+                input_Op_2.name = "option2";   
+                input_Op_2.id = "option_2";
+                input_Op_2.type = "text";
+                input_Op_2.className = "form-control"
+                input_Op_2.placeholder = "E.g. Option 2";
+                
+                var p_Op_3 = document.createElement("p");
+                p_Op_3.innerHTML = "Option 3";
+                
+                var div_Op_3 = document.createElement("div");
+                div_Op_3.className = "form-group";
+
+                var input_Op_3 = document.createElement("input");
+               input_Op_3.name = "option3";   
+               input_Op_3.id = "option_3";
+               input_Op_3.type = "text";
+               input_Op_3.className = "form-control"
+               input_Op_3.placeholder = "E.g. Option 3";
+                
+                var p_Op_4 = document.createElement("p");
+                p_Op_4.innerHTML = "Option 4";
+                
+                var div_Op_4 = document.createElement("div");
+                div_Op_4.className = "form-group";
+
+                var input_Op_4 = document.createElement("input");
+               input_Op_4.name = "option4";   
+               input_Op_4.id = "option_4";
+               input_Op_4.type = "text";
+               input_Op_4.className = "form-control"
+               input_Op_4.placeholder = "E.g. Option 4";           
+                
+                h2.after(p);
+                p.after(div);
+                div.appendChild(input);
+                
+                div.after(p_Op_1);
+                p_Op_1.after(div_Op_1);
+                div_Op_1.appendChild(input_Op_1);
+                
+                div_Op_1.after(p_Op_2);
+                p_Op_2.after(div_Op_2);
+                div_Op_2.appendChild(input_Op_2);
+                
+                div_Op_2.after(p_Op_3);
+                p_Op_3.after(div_Op_3);
+                div_Op_3.appendChild(input_Op_3);
+                
+                div_Op_3.after(p_Op_4);
+                p_Op_4.after(div_Op_4);
+                div_Op_4.appendChild(input_Op_4);
+            }
+            div_Op_4.after(add_button);
+        }
+
+
+        //pushing all the data into the array
+
+            //            work.push(data[i]);
+            displayForm();
+            //            var name = data[i].name;
+            //            var category = data[i].category;
+            //            var content = data[i].content;
+            //            
+            //            document.getElementById("name").innerHTML = name;
+        
+    </script>
+</html>
