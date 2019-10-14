@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -28,6 +29,9 @@ class Module(models.Model):
 
     class Meta:
         permissions = (("can_modify_module", "Can create/delete a module"),)#placeholder
+    
+    def get_absolute_url(self):
+        return reverse('appOne:module_home', args=[str(self.module_name)])
 
     def __str__(self):
         return self.module_name
@@ -42,6 +46,10 @@ class Chapter(models.Model):
 
     class Meta:
         permissions = (("can_publish_chapter", "Can publish a chapter"),)
+    
+    def get_absolute_url(self):
+        return reverse('appOne:chapter_home', kwargs={'pk': self.module.module_name,
+                                        'pq': self.chapter_name})
 
     def __str__(self):
         return f"{str(self.module)} {self.chapter_name}"

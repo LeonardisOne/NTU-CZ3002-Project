@@ -10,7 +10,9 @@
         <h1>List of modules</h1>
             {% load index %}
             {% for module in module_list %}
-                <h3>{{module.module_name}} <a> Delete </a> </h3>
+                <h3><a href="{{ module.get_absolute_url }}">{{module.module_name}} </a>
+                    <a href="{% url 'appOne:delete_module' module_pk=module.module_name %}">Delete</a>
+                </h3>
                 {% for chapter in chapters_all_mods|index:forloop.counter0 %}
                     <h5>{{ chapter.chapter_name }}</h5>
                 {% endfor %}
