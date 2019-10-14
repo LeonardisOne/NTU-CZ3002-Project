@@ -242,7 +242,17 @@ def prof_page(request):
 def student_page(request):
     student = Student.objects.get(user=request.user)
     modules_taken = student.modules_taken.all()
-    return render(request,'appOne/student.html',{'modules_taken': modules_taken})
+    chapters_all_mods = []
+    for module in modules_taken:
+        mod_chapters = Chapter.objects.filter(module=module)
+        chapters_all_mods.append(mod_chapters)
+
+    context = {
+        'modules_taken': modules_taken,
+        'chapters_all_mods': chapters_all_mods
+    }
+
+    return render(request,'appOne/student.html',context)
 
 #@permission_required('appOne.can_publish_chapter', raise_exception=True)
 def publish_chapter(request, pk, pq):
