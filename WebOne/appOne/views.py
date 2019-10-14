@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import *
+from .utilities import create_teams
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -9,10 +10,13 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 
 import firebase_admin
-from firebase_admin import auth, credentials
+from firebase_admin import auth, credentials, db
 
 cred = credentials.Certificate("../cz3002-firebase-adminsdk-zn2kj-457d20ac3e.json")
-firechat_app = firebase_admin.initialize_app(cred)
+firechat_app = firebase_admin.initialize_app(cred, {
+    'databaseURL' : 'https://cz3002.firebaseio.com/'
+})
+room_ref = db.reference('room-metadata')
 
 #make sure you have form name whenever you are dealing with form.
 # Create your views here.
@@ -227,7 +231,6 @@ def prof_page(request):
 
 def student_page(request):
     student = Student.objects.get(user=request.user)
-    print(student)
     modules_taken = student.modules_taken.all()
     return render(request,'appOne/student.html',{'modules_taken': modules_taken})
 
@@ -241,9 +244,22 @@ def publish_chapter(request, pk, pq):
 
         if form.is_valid():
             chapter_published.end_datetime = form.cleaned_data['end_datetime']
-            print(chapter_published.end_datetime)
+            print(chapter_published.end_datetime)#debug
+            alr_started = chapter_published.can_start
             chapter_published.can_start = True
             chapter_published.save()
+
+            team_list = create_teams(chapter_published, alr_started)
+
+            for team in team_list:
+                new_room_ref = room_ref.push()
+                team.room_id = new_room_ref.key
+                team.save()
+
+                new_room_ref.set({
+                    'name' : team.chapter.chapter_name + ' ' + team.team_name,
+                    'type' : 'public'
+                })
 
             return HttpResponseRedirect(reverse('index'))
 
@@ -260,7 +276,10 @@ def publish_chapter(request, pk, pq):
 #import json
 
 @login_required
-def chat(request):
+def chat(request, pk, pq):
+    module_stored = get_object_or_404(Module, module_name=pk)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
+    
     uid = request.user.username
     try:
         auth.create_user(uid=uid)
@@ -269,8 +288,13 @@ def chat(request):
         print("Existing user")
     custom_token = (auth.create_custom_token(uid)).decode()
 
+    student = Student.objects.get(user=request.user)
+    team = student.joined_teams.get(chapter=chapter_stored)
+    room_id = team.room_id
+
     context = {
         'custom_token': custom_token,
+        'room_id': room_id
     }
 
     return render(request, 'appOne/chat.html', context)
