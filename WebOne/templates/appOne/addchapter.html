@@ -1,3 +1,4 @@
+<!--
 {% extends "appOne/base.html" %}
 {% load staticfiles %}
 
@@ -18,3 +19,116 @@
   </div>
 
 {% endblock %}
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<!--{% load staticfiles %}-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+<style>
+    html, body{
+        color: white;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        font-size: 17px;
+        background-size: cover;
+        overflow:hidden; 
+}
+
+    #form-bg{
+        color: black;
+    }
+
+    .container-fluid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
+        width: 300px;
+        border: 3px solid black;
+        border-radius: 50px;
+        background-color:darkgrey;
+    }
+
+    .col{
+        width: 40vw;
+    }
+
+    form{   
+        padding: 10px 30px;
+    }
+
+    .form-group{
+        display:block;
+        margin: 0px auto;
+        max-width: 250px;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        font-size: 25px;
+    }
+
+    span{
+        display: table-cell;
+        width: 300px;
+        padding: 20px;
+        border: 3px solid white;
+    }
+
+    #username, #password{
+        margin: 30px 0;
+    }
+
+    input {
+        text-align: center;
+        margin: 10px 0px;
+    }
+
+    .btn {
+        margin-top: 20px;
+        width: 150px;
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col" id="form-bg">
+                <form id="form" name="form" method="post" action="phome.html"}>
+                  {% csrf_token %}
+                    <br>
+                    <img src="{% static 'loginpage/logo.png' %}" class="img-responsive">
+                    <br>
+                    <h2 class="title">Details of new chapter</h2>
+                    <br>
+                    <p>Chapter Number:</p>
+                    <div class="form-group">
+                        <input id="ChapterNo" name="ChapterNo" type="text" class="form-control" placeholder="E.g. Chapter 1"/>
+                    </div>
+                    <p>Name of Chapter:</p>
+                    <div class="form-group">
+                        <input id="name" name="name" type="text" class="form-control" placeholder="E.g. Intro to AI"/>
+                    </div>
+                    <p>Name of Professor:</p>
+                    <div class="form-group">
+                        <input id="prof" name="prof" type="text" class="form-control" placeholder="E.g. Prof Ken"/>
+                    </div>
+                    <p>Number of Question for Chapter:</p>
+                    <div class="form-group">
+                        <input id="numquestion" name="numquestion" type="text" class="form-control" placeholder="E.g. 15"/>
+                    </div>
+                
+                    <input type="submit" name="addChap" value="Add Chapter"class="btn btn-warning"/>
+                </form>
+            </div>
+        </div>
+    </div>     
+</body>
+</html>

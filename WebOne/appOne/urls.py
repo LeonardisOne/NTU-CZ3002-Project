@@ -4,8 +4,9 @@ from appOne import views
 
 app_name = 'appOne'
 urlpatterns = [
-    path('register/',views.register,name='register'),
+ path('register/',views.register,name='register'),
     path('user_login/',views.user_login,name='user_login'),
+    path('user_login/squiz(qns)',views.ansquiz,name='ansquiz'),
     path('add_module/', views.add_module, name = 'add_module'),
     path('modules/<str:pk>/addchapter/', views.add_chapter, name = 'add_chapter'),
     path('manage_module/', views.manage_module, name = 'manage_module'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('prof/',views.prof_page, name = 'prof_page'),
     path('student/',views.student_page, name = 'student_page'),
     path('chat/', views.chat, name = 'chat'),
+    
 ]

@@ -21,10 +21,6 @@ firechat_app = firebase_admin.initialize_app(cred)
 def index(request):
     return render(request, 'appOne/index.html')
 
-def index1(request):
-    return render(request, 'appOne/index1.html')
-
-
 @login_required
 def special(request):
     return HttpResponse("You are logged in, Nice!")
@@ -158,15 +154,18 @@ def manage_chapter(request, pk):
 def prof_page(request):
     prof = Professor.objects.get(user=request.user)
     module_list = Module.objects.filter(coordinator=prof)
-    return render(request,'appOne/prof.html',{'module_list': module_list})
+    return render(request,'appOne/phome.html',{'module_list': module_list})
 
 def student_page(request):
     student = Student.objects.get(user=request.user)
     print(student)
     modules_taken = student.modules_taken.all()
-    return render(request,'appOne/index1.html',{'modules_taken': modules_taken})
+    return render(request,'appOne/shome.html',{'modules_taken': modules_taken})
 
 #import json
+
+def ansquiz(request):
+    return render(request,'appOne/squiz(qns).html')
 
 @login_required
 def chat(request):
