@@ -8,8 +8,12 @@
 <div class="container">
     <div class="jumbotron">
         <h1>List of modules</h1>
+            {% load index %}
             {% for module in module_list %}
                 <h3>{{module.module_name}} <a> Delete </a> </h3>
+                {% for chapter in chapters_all_mods|index:forloop.counter0 %}
+                    <h5>{{ chapter.chapter_name }}</h5>
+                {% endfor %}
             {% endfor %}
     </div>
   </div>

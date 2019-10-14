@@ -227,7 +227,17 @@ def manage_question(request, pk, pq):
 def prof_page(request):
     prof = Professor.objects.get(user=request.user)
     module_list = Module.objects.filter(coordinator=prof)
-    return render(request,'appOne/prof.html',{'module_list': module_list})
+    chapters_all_mods = []
+    for module in module_list:
+        mod_chapters = Chapter.objects.filter(module=module)
+        chapters_all_mods.append(mod_chapters)
+    
+    context = {
+        'module_list': module_list,
+        'chapters_all_mods': chapters_all_mods
+    }
+
+    return render(request,'appOne/prof.html', context)
 
 def student_page(request):
     student = Student.objects.get(user=request.user)
