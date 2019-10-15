@@ -3,7 +3,7 @@ from .forms import *
 from .utilities import create_teams
 
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 # below is deprecated
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
@@ -259,41 +259,45 @@ def student_page(request):
 #@permission_required('appOne.can_publish_chapter', raise_exception=True)
 def publish_chapter(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
-    chapter_published = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        chapter_published = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
 
-    if request.method == 'POST':
-        form = PublishChapterForm(request.POST)
+        if request.method == 'POST':
+            form = PublishChapterForm(request.POST)
 
-        if form.is_valid():
-            chapter_published.end_datetime = form.cleaned_data['end_datetime']
-            print(chapter_published.end_datetime)#debug
-            alr_started = chapter_published.can_start
-            chapter_published.can_start = True
-            chapter_published.save()
+            if form.is_valid():
+                chapter_published.end_datetime = form.cleaned_data['end_datetime']
+                print(chapter_published.end_datetime)#debug
+                alr_started = chapter_published.can_start
+                chapter_published.can_start = True
+                chapter_published.save()
 
-            team_list = create_teams(chapter_published, alr_started)
+                team_list = create_teams(chapter_published, alr_started)
 
-            for team in team_list:
-                new_room_ref = room_ref.push()
-                team.room_id = new_room_ref.key
-                team.save()
+                for team in team_list:
+                    new_room_ref = room_ref.push()
+                    team.room_id = new_room_ref.key
+                    team.save()
 
-                new_room_ref.set({
-                    'name' : team.chapter.chapter_name + ' ' + team.team_name,
-                    'type' : 'public'
-                })
+                    new_room_ref.set({
+                        'name' : team.chapter.chapter_name + ' ' + team.team_name,
+                        'type' : 'public'
+                    })
 
-            return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('index'))
 
+        else:
+            form = PublishChapterForm()
+
+        context = {
+            'form': form,
+            'chapter': chapter_published
+        }
+
+        return render(request, 'appOne/publish.html', context)
     else:
-        form = PublishChapterForm()
-
-    context = {
-        'form': form,
-        'chapter': chapter_published
-    }
-
-    return render(request, 'appOne/publish.html', context)
+        raise Http404(u"Access Denied")
 
 #import json
 """ def question_result(request, q_name, ch_name, m_name):
@@ -301,8 +305,7 @@ def publish_chapter(request, pk, pq):
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
     question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name) """
 
-
-
+@permission_required('appOne.can_try_qn', raise_exception=True)
 def start_question(request, q_num, ch_name, m_name):
     module_stored = get_object_or_404(Module, module_name=m_name)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
@@ -329,6 +332,7 @@ def start_question(request, q_num, ch_name, m_name):
 
         students = team.student_set.all()
         student_list = list(students)
+        print(student_list) # debug
 
         index = student_list.index(student) # get the index of student....
         ordering = (index + q_num ) % 5

@@ -45,7 +45,8 @@ class Chapter(models.Model):
     end_datetime = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        permissions = (("can_publish_chapter", "Can publish a chapter"),)
+        permissions = (("can_publish_chapter", "Can publish a chapter"),
+                        ("can_try_qn", "Can try questions in a chapter"))
 
     def get_absolute_url(self):
         return reverse('appOne:chapter_home', kwargs={'pk': self.module.module_name,
