@@ -22,6 +22,8 @@ room_ref = db.reference('room-metadata')
 # Create your views here.
 @login_required
 def index(request):
+
+
     return render(request, 'appOne/index.html')
 
 @login_required
@@ -110,8 +112,8 @@ def add_module(request):
             module = form.save(commit=False)
             module.save()
             print("Done")
-            #return HttpResponseRedirect(reverse('index'))
-            return render(request,'appOne/manage_module.html',{})
+            return redirect('/appOne/prof')
+            # return render(request,'appOne/prof.html', context)
     else:
         form = AddModuleForm()
 
@@ -231,7 +233,7 @@ def prof_page(request):
     for module in module_list:
         mod_chapters = Chapter.objects.filter(module=module)
         chapters_all_mods.append(mod_chapters)
-    
+
     context = {
         'module_list': module_list,
         'chapters_all_mods': chapters_all_mods
@@ -299,7 +301,7 @@ def publish_chapter(request, pk, pq):
 def chat(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
-    
+
     uid = request.user.username
     try:
         auth.create_user(uid=uid)

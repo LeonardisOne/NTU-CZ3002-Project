@@ -1,5 +1,43 @@
 {% extends 'appOne/base.html' %}
+
+{% block head_block %}
+<meta charset="utf-8">
+  <title>ASE Assignment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'loginpage/css/style.css' %}" type='text/css' />
+{% endblock %}
+
 {% block body_block %}
+
+<div class="container-fluid">
+        <div class="row">
+            <div class="col" id="form-bg">
+                <form id="form" name="form" method="post" action="{% url 'appOne:user_login' %}">
+                  {% csrf_token %}
+                    <br></br>
+                    <img src="{% static 'loginpage/logo.png' %}" class="img-responsive">
+                    <br></br>
+                    <h2 class="title">Please Login to LEONARDISONE</h2>
+                    <br></br>
+                    <div class="form-group">
+                        <input id="username" name="username" type="text" class="form-control" placeholder="Username"/>
+                    </div>
+
+                    <div class="form-group">
+                        <input id="password" name="password" type="password" class="form-control" placeholder="Password"/>
+                        Show Password <input type="checkbox" onclick="myFunction()">
+                    </div>
+
+                    <input type="submit" name="login" value="Sign In" class="btn btn-warning"/>
+                </form>
+            </div>
+        </div>
+    </div>
+<!--
   <div class="container">
     <div class="jumbotron">
       <h1>Please Login</h1>
@@ -19,4 +57,15 @@
 
     </div>
   </div>
+  -->
+  <script>
+  function myFunction(){
+    var x = document.getElementById("password");
+    if(x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+  </script>
 {% endblock %}
