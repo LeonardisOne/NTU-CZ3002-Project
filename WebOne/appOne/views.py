@@ -157,7 +157,7 @@ def add_question(request, pk, pq):
             question = form.save(commit=False)
             question.chapter = chapter_stored
             question.save()
-
+            print(question.pk)
             # return HttpResponseRedirect(reverse('index'))
             return redirect(f'/appOne/modules/{pk}/chapters/{pq}/manage_question/')
 
@@ -296,6 +296,54 @@ def publish_chapter(request, pk, pq):
     return render(request, 'appOne/publish.html', context)
 
 #import json
+
+def start_question(request, q_name, ch_name, m_name):
+    module_stored = get_object_or_404(Module, module_name=m_name)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
+    question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name)
+
+    student = Student.objects.get(user=request.user)
+    team = student.joined_teams.get(chapter=chapter_stored)
+
+    students = team.student_set.all()
+    student_list = list(students)
+
+    index = student_list.index(student) # get the index of student....
+    ordering = (index + question_stored.question_number ) % 5
+    haveQuestion = False
+
+    optionStr = ""
+    display_str = ""
+    if (ordering == 0):
+        haveQuestion = True
+        display_str = question_stored.question_name
+
+    elif (ordering == 1):
+        display_str = question_stored.question_optionA
+        optionStr = "OPTION A"
+
+    elif (ordering==2):
+        display_str = question_stored.question_optionB
+        optionStr = "OPTION B"
+
+    elif (ordering==3):
+        display_str = question_stored.question_optionC
+        optionStr = "OPTION C"
+
+    elif(ordering == 4):
+        display_str = question_stored.question_optionD
+        optionStr = "OPTION D"
+
+    else:
+        print("error")
+
+    context = {
+        'display_str' : display_str,
+        'haveQuestion' : haveQuestion,
+        'optionStr' : optionStr,
+    }
+
+    return render(request, 'appOne/quiz.html', context)
 
 @login_required
 def chat(request, pk, pq):

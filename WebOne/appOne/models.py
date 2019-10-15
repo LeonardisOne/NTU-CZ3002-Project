@@ -29,7 +29,7 @@ class Module(models.Model):
 
     class Meta:
         permissions = (("can_modify_module", "Can create/delete a module"),)#placeholder
-    
+
     def get_absolute_url(self):
         return reverse('appOne:module_home', args=[str(self.module_name)])
 
@@ -46,7 +46,7 @@ class Chapter(models.Model):
 
     class Meta:
         permissions = (("can_publish_chapter", "Can publish a chapter"),)
-    
+
     def get_absolute_url(self):
         return reverse('appOne:chapter_home', kwargs={'pk': self.module.module_name,
                                         'pq': self.chapter_name})
@@ -74,7 +74,7 @@ class Student(UserProfileInfo):
     joined_teams = models.ManyToManyField(ChapterTeam)
 
 class Question(models.Model):
-
+    question_number = models.PositiveIntegerField()
     question_name = models.CharField(max_length=500) #Question statement
     question_optionA = models.CharField(max_length=100)
     question_optionB = models.CharField(max_length=100)
