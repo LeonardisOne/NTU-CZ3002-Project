@@ -65,6 +65,9 @@ class ChapterTeam(models.Model):
     team_name = models.CharField(max_length=20)
     room_id = models.CharField(max_length=30)
 
+    qn_tried = models.CharField(max_length=50, default="")
+    qn_results = models.CharField(max_length=50, default="")
+
     objects = ChapterTeamManager()
 
     def _str_(self):

@@ -336,17 +336,26 @@ def start_question(request, q_num, ch_name, m_name):
     except:
         raise Http404(u"Access Denied")
 
+    if len(team.qn_tried) + 1 < q_num :
+        raise Http404(u"Please do questions in order")
+
     if request.method == 'POST':
         ans_return = request.POST.get('ans_return')
         print(ans_return)
         solution = get_object_or_404(Solution, question=question_stored)
-
+        team.qn_tried = team.qn_tried + "1"
+        
         if ans_return == solution.solution_answer :
+            team.qn_results = team.qn_results + "1"
             print("Answer is Correct")
 
         else:
+            team.qn_results = team.qn_results + "0"
             print("Answer is Wrong")
 
+        print(team.qn_tried)
+        print(team.qn_results)
+        team.save()
 
         return HttpResponseRedirect(reverse('index'))
 
