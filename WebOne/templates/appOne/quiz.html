@@ -61,6 +61,7 @@
 
     </head>
     <body>
+
     <button class="back" onclick="goBack()"><</button>
 
         <script>
@@ -69,6 +70,7 @@
         }
         </script>
     <form method="POST" action="">
+      {% csrf_token %}
         <div class="box">
         <div class = "qns">
             <hr>
@@ -79,12 +81,12 @@
 
             </div>
             <hr>
-            </div
+            </div>
         <div class="option">
-            <input type="button" class="optBtn" id="option1" value="Option A" name ="option" onclick = "getAnswer(this.value)" style="background-color: orange">
-            <input type="button" class="optBtn" id="option2" value ="Option B" name ="option" onclick = "getAnswer(this.value)" style="background-color:skyblue">
-            <input type="button" class="optBtn" id="option3" value ="Option C" name ="option" onclick = "getAnswer(this.value)" style="background-color:greenyellow">
-            <input type="button" class="optBtn" id="option4" value ="Option D" name ="option" onclick = "getAnswer(this.value)" style="background-color:orangered">
+            <input type="submit" class="optBtn" id="option1" value="A" name ="ans_return" onclick = "getAnswer(this.value)" style="background-color: orange">
+            <input type="submit" class="optBtn" id="option2" value ="B" name ="ans_return" onclick = "getAnswer(this.value)" style="background-color:skyblue">
+            <input type="submit" class="optBtn" id="option3" value ="C" name ="ans_return" onclick = "getAnswer(this.value)" style="background-color:greenyellow">
+            <input type="submit" class="optBtn" id="option4" value ="D" name ="ans_return" onclick = "getAnswer(this.value)" style="background-color:orangered">
         </div>
         {% else %}
 

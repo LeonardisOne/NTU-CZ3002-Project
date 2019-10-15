@@ -12,3 +12,4 @@ class ChapterAdmin(admin.ModelAdmin):
 admin.site.register(ChapterTeam)
 admin.site.register(Professor)
 admin.site.register(Question)
+admin.site.register(Solution)
