@@ -325,7 +325,26 @@ def publish_chapter(request, pk, pq):
     question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name) """
 
 @permission_required('appOne.can_try_qn', raise_exception=True)
-def start_question(request, q_num, ch_name, m_name):
+def start_question(request, ch_name, m_name):
+    module_stored = get_object_or_404(Module, module_name=m_name)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
+
+    student = Student.objects.get(user=request.user)
+    try:
+        team = student.joined_teams.get(chapter=chapter_stored)
+    except:
+        raise Http404(u"Access Denied")
+
+    qn_list = Question.objects.filter(chapter=chapter_stored)
+
+    context = {
+        'qn_list': qn_list,
+    }
+
+    return render(request,'appOne/start_quiz.html', context)
+
+@permission_required('appOne.can_try_qn', raise_exception=True)
+def view_question(request, q_num, ch_name, m_name):
     module_stored = get_object_or_404(Module, module_name=m_name)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
     question_stored = get_object_or_404(Question, chapter=chapter_stored, question_number=q_num)

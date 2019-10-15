@@ -90,6 +90,11 @@ class Question(models.Model):
     class Meta:
         permissions = (("can_modify_question","Can create/delete a question"),)
 
+    def get_absolute_url(self):
+        return reverse('appOne:view_question', kwargs={'m_name': self.chapter.module.module_name,
+                                        'ch_name': self.chapter.chapter_name,
+                                        'q_num': self.question_number})
+    
     def __str__(self):
         return f"{str(self.chapter)} {self.question_name}"
 
