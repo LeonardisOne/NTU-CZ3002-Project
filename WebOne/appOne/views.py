@@ -126,58 +126,69 @@ def add_module(request):
 @permission_required('appOne.add_chapter', raise_exception=True)
 def add_chapter(request, pk):
     module_stored = get_object_or_404(Module, module_name=pk)
-    if request.method == 'POST':
-        form = AddChapterForm(request.POST)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        if request.method == 'POST':
+            form = AddChapterForm(request.POST)
 
-        if form.is_valid():
-            chapter = form.save(commit=False)
-            chapter.module = module_stored
-            chapter.save()
+            if form.is_valid():
+                chapter = form.save(commit=False)
+                chapter.module = module_stored
+                chapter.save()
 
-            # return HttpResponseRedirect(reverse('index'))
-            return redirect(f'/appOne/modules/{pk}/manage_chapter/')
+                # return HttpResponseRedirect(reverse('index'))
+                return redirect(f'/appOne/modules/{pk}/manage_chapter/')
+        else:
+            form = AddChapterForm()
+
+        context = {
+            'form': form,
+            'module': module_stored
+        }
+        return render(request, 'appOne/addchapter.html', context)
     else:
-        form = AddChapterForm()
-
-    context = {
-        'form': form,
-        'module': module_stored
-    }
-    return render(request, 'appOne/addchapter.html', context)
+        raise Http404(u"Access Denied")
 
 
 @permission_required('appOne.add_question', raise_exception=True)
 def add_question(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
-    chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=pq)
-    if request.method == 'POST':
-        form = AddQuestionForm(request.POST)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=pq)
+        if request.method == 'POST':
+            form = AddQuestionForm(request.POST)
 
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.chapter = chapter_stored
-            question.save()
-            print(question.pk)
-            # return HttpResponseRedirect(reverse('index'))
-            return redirect(f'/appOne/modules/{pk}/chapters/{pq}/manage_question/')
+            if form.is_valid():
+                question = form.save(commit=False)
+                question.chapter = chapter_stored
+                question.save()
+                print(question.pk)
+                # return HttpResponseRedirect(reverse('index'))
+                return redirect(f'/appOne/modules/{pk}/chapters/{pq}/manage_question/')
 
+        else:
+            form = AddQuestionForm()
+
+        context = {
+            'form': form,
+            'chapter': chapter_stored
+        }
+
+        return render(request, 'appOne/addquestion.html', context)
     else:
-        form = AddQuestionForm()
-
-    context = {
-        'form': form,
-        'chapter': chapter_stored
-    }
-
-    return render(request, 'appOne/addquestion.html', context)
+        raise Http404(u"Access Denied")
 
 @permission_required('appOne.delete_module', raise_exception=True)
 def delete_module(request, module_pk):
     module_stored = Module.objects.get(module_name=module_pk)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        module_stored.delete()
 
-    module_stored.delete()
-
-    return redirect('/appOne/manage_module/')
+        return redirect('/appOne/manage_module/')
+    else:
+        raise Http404(u"Access Denied")
 
 
 @permission_required('appOne.delete_chapter', raise_exception=True)
@@ -186,12 +197,16 @@ def delete_chapter(request, module_pk, chapter_name):
     print(chapter_name)
 
     module_stored = get_object_or_404(Module, module_name=module_pk)
-    chapter_stored = Chapter.objects.get(module=module_stored, chapter_name=chapter_name)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        chapter_stored = Chapter.objects.get(module=module_stored, chapter_name=chapter_name)
 
-    print(chapter_stored)
-    chapter_stored.delete()
-    # return render(request, 'appOne/delete_chapter.html')
-    return redirect(f'/appOne/modules/{module_pk}/manage_chapter/')
+        print(chapter_stored)
+        chapter_stored.delete()
+        # return render(request, 'appOne/delete_chapter.html')
+        return redirect(f'/appOne/modules/{module_pk}/manage_chapter/')
+    else:
+        raise Http404(u"Access Denied")
 
 @permission_required('appOne.delete_question', raise_exception=True)
 def delete_question(request, module_pk, chapter_name, question_name):
@@ -199,11 +214,15 @@ def delete_question(request, module_pk, chapter_name, question_name):
     print(chapter_name)
 
     module_stored = get_object_or_404(Module, module_name=module_pk)
-    chapter_stored = get_object_or_404(Chapter, chapter_name=chapter_name)
-    question_stored = Question.objects.get(question_name=question_name)
-    question_stored.delete()
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        chapter_stored = get_object_or_404(Chapter, chapter_name=chapter_name)
+        question_stored = Question.objects.get(question_name=question_name)
+        question_stored.delete()
 
-    return redirect(f'/appOne/modules/{module_pk}/chapters/{chapter_name}/manage_question/')
+        return redirect(f'/appOne/modules/{module_pk}/chapters/{chapter_name}/manage_question/')
+    else:
+        raise Http404(u"Access Denied")
 
 @permission_required('appOne.change_module', raise_exception=True)
 def manage_module(request):
