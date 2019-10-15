@@ -5,12 +5,8 @@
 <div class="container">
     <div class="jumbotron">
         <h1>List of modules taken</h1>
-            {% load index %}
             {% for module in modules_taken %}
-                <h3><a href="{{ module.get_absolute_url }}">{{module.module_name}} </a></h3><!-- placeholder link -->
-                {% for chapter in chapters_all_mods|index:forloop.counter0 %}
-                    <h5><a href="{{ chapter.get_absolute_url }}">{{chapter.chapter_name}} </a></h5><!-- placeholder link -->
-                {% endfor %}
+                <h3>{{module.module_name}}</h3>
             {% endfor %}
     </div>
   </div>

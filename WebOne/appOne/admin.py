@@ -4,11 +4,5 @@ from .models import *
 admin.site.register(UserProfileInfo)
 admin.site.register(Module)
 admin.site.register(Student)
-
-@admin.register(Chapter)
-class ChapterAdmin(admin.ModelAdmin):
-    exclude = ('can_start',)
-
-admin.site.register(ChapterTeam)
+admin.site.register(Chapter)
 admin.site.register(Professor)
-admin.site.register(Question)

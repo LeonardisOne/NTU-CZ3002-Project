@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <style>
+        .optBtn{
+            height: 100px;
+            width: 500px;
+            border: 1px black solid;
+            padding: 10px 60px;
+            margin: 10px;
+            font-size: 17px;
+            box-shadow: 1px 1px 1px 1px black;
+            border-radius:50px;
+        }
+        .qns{
+            list-style-type: none;
+            text-align: center;
+            border: none;
+            width:500px;
+            margin:auto;
+        }
+
+        .questionNo{
+            font-size: 100px;
+            color:black;
+        }
+        .question{
+            font-size: 20px;
+            vertical-align: top;
+            line-height:100px;
+        }
+        p{
+            margin: 10px;
+        }
+        .option{
+            text-align: center;
+            margin: auto;
+        }
+        body{
+            background-color: dimgray;
+        }
+        hr{
+            border-top:1px solid rgba(1,1,1,1);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0.5px 0.5px 0.5px 1px black;
+        }
+        .back{
+            background-color:dimgray;
+            height: 50px;
+            width: 50px;
+            font-size: 40px;
+            text-align: center;
+            margin:0px;
+            line-height: 1px;
+        }
+
+        </style>
+
+    </head>
+    <body>
+        <button class="back" onclick="goBack()"> Back </button>
+
+        <script>
+        function goBack() {
+        window.history.back();
+        }
+        </script>
+    <form method="POST" action="quiz2.html">
+        <div class="box">
+        <div class = "qns">
+            <hr>
+            <div class="questionNo" name="questionNo">
+            <p>1<span class="question">How much is the total weight of an apple?</span></p>
+            </div>
+            <hr>
+            </div>
+        <div class="option">
+            <input type="button" class="optBtn" id="option1" value="Kenrick" name ="option" onclick = "getAnswer(this.value)" style="background-color: orange">
+            <input type="button" class="optBtn" id="option2" value ="Alvin" name ="option" onclick = "getAnswer(this.value)" style="background-color:skyblue">
+            <input type="button" class="optBtn" id="option3" value ="Gibson" name ="option" onclick = "getAnswer(this.value)" style="background-color:greenyellow">
+            <input type="button" class="optBtn" id="option4" value ="Zhong lai" name ="option" onclick = "getAnswer(this.value)" style="background-color:orangered">
+        </div>
+        </div>
+    </form>
+        <script>
+        function getAnswer(value){
+           var answer = value;
+            alert("Answer Submitted Successfully");
+//            get answer from here to pass to database
+
+        }
+    </script>
+        </body>
+</html>
