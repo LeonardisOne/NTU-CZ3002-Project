@@ -296,17 +296,17 @@ def publish_chapter(request, pk, pq):
     return render(request, 'appOne/publish.html', context)
 
 #import json
-def question_result(request, q_name, ch_name, m_name):
+""" def question_result(request, q_name, ch_name, m_name):
     module_stored = get_object_or_404(Module, module_name=m_name)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
-    question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name)
+    question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name) """
 
 
 
-def start_question(request, q_name, ch_name, m_name):
+def start_question(request, q_num, ch_name, m_name):
     module_stored = get_object_or_404(Module, module_name=m_name)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
-    question_stored = get_object_or_404(Question, chapter=chapter_stored, question_name=q_name)
+    question_stored = get_object_or_404(Question, chapter=chapter_stored, question_number=q_num)
 
     if request.method == 'POST':
         ans_return = request.POST.get('ans_return')
@@ -331,7 +331,7 @@ def start_question(request, q_name, ch_name, m_name):
         student_list = list(students)
 
         index = student_list.index(student) # get the index of student....
-        ordering = (index + question_stored.question_number ) % 5
+        ordering = (index + q_num ) % 5
         haveQuestion = False
 
         optionStr = ""
