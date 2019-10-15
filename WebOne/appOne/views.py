@@ -112,8 +112,8 @@ def add_module(request):
             module = form.save(commit=False)
             module.save()
             print("Done")
+            # return redirect('/appOne/prof')
             return redirect('/appOne/prof')
-            # return render(request,'appOne/prof.html', context)
     else:
         form = AddModuleForm()
 
@@ -137,6 +137,7 @@ def add_chapter(request, pk):
                 chapter.save()
 
                 # return HttpResponseRedirect(reverse('index'))
+                # return redirect('appOne:prof_page')
                 return redirect(f'/appOne/modules/{pk}/manage_chapter/')
         else:
             form = AddChapterForm()
@@ -234,7 +235,7 @@ def manage_module(request):
 def manage_chapter(request, pk):
     module_stored = get_object_or_404(Module, module_name=pk)
     chapter_list = Chapter.objects.filter(module=module_stored)
-    return render(request,'appOne/manage_chapter.html',{'module_pk': pk, 'chapter_list': chapter_list})
+    return render(request,'appOne/manage_chapter.html',{'module_pk': pk})
 
 @permission_required('appOne.change_question', raise_exception=True)
 def manage_question(request, pk, pq):
@@ -246,8 +247,11 @@ def manage_question(request, pk, pq):
 #     return render(request,'appOne/view_module.html',{})
 
 def prof_page(request):
+
     prof = Professor.objects.get(user=request.user)
+
     module_list = Module.objects.filter(coordinator=prof)
+
     chapters_all_mods = []
     for module in module_list:
         mod_chapters = Chapter.objects.filter(module=module)
@@ -363,7 +367,7 @@ def view_question(request, q_num, ch_name, m_name):
         print(ans_return)
         solution = get_object_or_404(Solution, question=question_stored)
         team.qn_tried = team.qn_tried + "1"
-        
+
         if ans_return == solution.solution_answer :
             team.qn_results = team.qn_results + "1"
             print("Answer is Correct")

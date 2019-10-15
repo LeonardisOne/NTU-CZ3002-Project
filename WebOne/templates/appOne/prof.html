@@ -1,13 +1,7 @@
-{% extends "appOne/index.html" %}
 {% load staticfiles %}
-<!-- Original One...
-{% block nav_bar %}
-<li><a class="navbar-link" href="{% url 'appOne:manage_module'%}">Manage Module</a></li>
-{% endblock %}
--->
-
-{% block head_block %}
-  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cardo" />
     <!--<link rel="stylesheet" href="{% static 'Homepage/css/style.css' %}" type='text/css' />-->
 
@@ -151,7 +145,7 @@
             transition: all 0.5s;
             cursor: pointer;
             margin: 5px;
-  }
+}
 
         .seemore span {
             cursor: pointer;
@@ -204,7 +198,7 @@
             width: 100%;
         }
 
-  .navbar a {
+.navbar a {
   float: left;
   font-size: 16px;
   color: white;
@@ -212,14 +206,14 @@
   padding: 14px 16px;
   text-decoration: none;
     width: 160px;
-  }
+}
 
-  .dropdown {
+.dropdown {
   float: left;
   overflow: hidden;
-  }
+}
 
-  .dropdown .dropbtn {
+.dropdown .dropbtn {
   font-size: 16px;
   border: none;
   outline: none;
@@ -230,69 +224,62 @@
   margin: 0;
     width: 180px;
     cursor: pointer;
-  }
+}
 
-  .navbar a:hover, .dropdown:hover .dropbtn {
+.navbar a:hover, .dropdown:hover .dropbtn {
   background-color: red;
-  }
+}
 
-  .dropdown-content {
+.dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  }
+}
 
-  .dropdown-content a {
+.dropdown-content a {
   float: none;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
-  }
+}
 
-  .dropdown-content a:hover {
+.dropdown-content a:hover {
   background-color: #ddd;
-  }
+}
 
-  .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
-  }
+}
         .right{
             float:right;
         }
     </style>
-{% endblock %}
+</head>
 <script>
-  function display(){
-    var drop = document.getElementById("drop");
-    drop.classList.toggle('expand');
-  }
-
-  function display2(){
-    var drop = document.getElementById("drop2");
-    drop2.classList.toggle('expand');
-  }
+function display()
+{
+   var drop = document.getElementById("drop");
+   drop.classList.toggle('expand');
+}
 
 </script>
-{% block bg %}
-  bgcolor="#696969"
-{% endblock %}
-
-{% block body_block %}
+<body bgcolor="#696969">
 {% load index %}
-<div class="navbar">
+  <div class="navbar">
   <a href="#home">Home</a>
   <div class="dropdown">
     <button class="dropbtn">Module
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-      <a href="#CZ3003">CZ3003</a>
-                <a href="#CZ3001">CZ3001</a>
+      {% for module in module_list %}
+      <a href="#{module.module_name}">{{module.module_name}}</a>
+      {% endfor %}
             </div>
         </div>
         <div class="right">
@@ -302,68 +289,45 @@
     </div>
     {% load staticfiles %}
     {% for module in module_list %}
-      <form enctype="multipart/form-data" method="POST" action="{% url 'appOne:add_chapter' pk=module.module_name%}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="addChap" type="submit" name="" value="+ Add Chapter">
-      </form>
-      <h1 class= "module"><u><a name="{module.module_name}">
-      {{module.module_name}}</a></u></h1>
-      <div class="flex-container" id="drop">
-        {% for chapter in chapters_all_mods|index:forloop.counter0 %}
-        <div class="box">
-            <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
-            <div class="flex-text">
-                <p class="sub-title">{{chapter.chapter_name}}</p>
-                <hr>
-                <p> {{chapter.chapter_desc}} </p>
-                <p> Start date: {chapter.can_start}</p>
-                <p> End date : {chapter.end_datetime}</p>
-                <p> Prof Ken </p>
-            </div>
-            <div class="flex-container-btn">
-                <a href="addQns.html">
-                    <button class="flex-btn link">
-                        Edit
-                    </button>
-                </a>
-                <a href="http://google.com/">
-                    <button class="flex-btn link">
-                        View
-                    </button>
-                </a>
-            </div>
-        </div>
-        {% endfor %}
+    <form enctype="multipart/form-data" method="POST" action="addchapter.html">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input class="addChap" type="submit" name="" value="+ Add Chapter">
+    </form>
+    <h1 class= "module"><u><a name="{module.module_name}">
+    {{module.module_name}}</a></u></h1>
+    <div class="flex-container" id="drop">
+      {% for chapter in chapters_all_mods|index:forloop.counter0 %}
+      <div class="box">
+          <img src="http://prestige-rm.com/wp-content/uploads/2019/09/Motor-Personal.png"/>
+          <div class="flex-text">
+              <p class="sub-title">{{chapter.chapter_name}}</p>
+              <hr>
+              <p> {{chapter.chapter_desc}} </p>
+              <p> End date: {{chapter.end_datetime}} </p>
+              <p> Prof Ken </p>
+          </div>
+          <div class="flex-container-btn">
+              <a href="addQns.html">
+                  <button class="flex-btn link">
+                      Edit
+                  </button>
+              </a>
+              <a href="http://google.com/">
+                  <button class="flex-btn link">
+                      View
+                  </button>
+              </a>
+          </div>
 
-      <div >
-      <button class="seemore" onclick="display()"><span>see more</span></button>
       </div>
+      {% endfor %}
+    </div>
+    <div>
+    <button class="seemore" onclick="display()"><span>see more</span></button>
+    </div>
     {% endfor %}
 
 
-<!--
-<div class="container">
-    <div class="jumbotron">
-        <h1>List of modules</h1>
-            {% load index %}
-            {% for module in module_list %}
-                <h3><a href="{{ module.get_absolute_url }}">{{module.module_name}} </a>
-                    <a href="{% url 'appOne:delete_module' module_pk=module.module_name %}">Delete</a>
-                </h3>
-                {% for chapter in chapters_all_mods|index:forloop.counter0 %}
-                    <h5>{{ chapter.chapter_name }}</h5>
-                {% endfor %}
-            {% endfor %}
-    </div>
-  </div>
--->
-<script>
-function display()
-{
-   var drop = document.getElementById("drop");
-   drop.classList.toggle('expand');
-}
-</script>
-
-{% endblock %}
+</body>
+</html>

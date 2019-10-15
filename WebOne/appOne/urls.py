@@ -7,6 +7,27 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('user_login/',views.user_login,name='user_login'),
     path('add_module/', views.add_module, name='add_module'),
+    path('modules/<str:pk>/addchapter/', views.add_chapter, name='add_chapter'),
+    path('manage_module/', views.manage_module, name='manage_module'),
+    path('modules/<str:pk>/',views.manage_chapter, name='module_home'),
+    path('modules/<str:pk>/manage_chapter/',views.manage_chapter, name='manage_chapter'),
+    path('modules/<str:pk>/chapters/<str:pq>/',views.manage_question, name='chapter_home'),
+    path('modules/<str:pk>/chapters/<str:pq>/manage_question/',views.manage_question, name='manage_question'),
+    path('modules/<str:pk>/chapters/<str:pq>/add_question/',views.add_question,name='add_question'),
+    path('prof/',views.prof_page, name = 'prof_page'),
+    path('student/',views.student_page, name = 'student_page'),
+    path('modules/<str:pk>/chapters/<str:pq>/chat/', views.chat, name = 'chat'),
+    path('modules/delete_chapter/<module_pk>/<chapter_name>', views.delete_chapter, name="delete_chapter"),
+    path('modules/delete_question/<module_pk>/<chapter_name>/<question_name>',views.delete_question, name="delete_question"),
+    path('modules/delete_module/<module_pk>/',views.delete_module, name='delete_module'),
+    path('modules/<str:pk>/chapters/<str:pq>/publish/', views.publish_chapter, name='publish_chapter'),
+    path('<m_name>/<ch_name>/<int:q_num>/',views.start_question, name='start_question'),
+]
+"""
+urlpatterns = [
+    path('register/',views.register,name='register'),
+    path('user_login/',views.user_login,name='user_login'),
+    path('add_module/', views.add_module, name='add_module'),
     path('<str:pk>/addchapter/', views.add_chapter, name='add_chapter'),
     path('manage_module/', views.manage_module, name='manage_module'),
     path('<str:pk>/',views.manage_chapter, name='module_home'),
@@ -23,4 +44,4 @@ urlpatterns = [
     path('<str:pk>/<str:pq>/publish/', views.publish_chapter, name='publish_chapter'),
     path('<m_name>/<ch_name>/start_quiz/',views.start_question, name='start_question'),
     path('<m_name>/<ch_name>/<int:q_num>/',views.view_question, name='view_question'),
-]
+] """
