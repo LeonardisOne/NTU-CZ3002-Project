@@ -72,7 +72,7 @@ class ChapterTeam(models.Model):
 
 class Student(UserProfileInfo):
     modules_taken = models.ManyToManyField(Module)
-    joined_teams = models.ManyToManyField(ChapterTeam)
+    joined_teams = models.ManyToManyField(ChapterTeam, blank=True)
 
 class Question(models.Model):
     question_number = models.PositiveIntegerField()

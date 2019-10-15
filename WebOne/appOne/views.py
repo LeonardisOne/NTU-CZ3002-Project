@@ -330,6 +330,12 @@ def start_question(request, q_num, ch_name, m_name):
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
     question_stored = get_object_or_404(Question, chapter=chapter_stored, question_number=q_num)
 
+    student = Student.objects.get(user=request.user)
+    try:
+        team = student.joined_teams.get(chapter=chapter_stored)
+    except:
+        raise Http404(u"Access Denied")
+
     if request.method == 'POST':
         ans_return = request.POST.get('ans_return')
         print(ans_return)
@@ -345,10 +351,6 @@ def start_question(request, q_num, ch_name, m_name):
         return HttpResponseRedirect(reverse('index'))
 
     else:
-
-        student = Student.objects.get(user=request.user)
-        team = student.joined_teams.get(chapter=chapter_stored)
-
         students = team.student_set.all()
         student_list = list(students)
         print(student_list) # debug
