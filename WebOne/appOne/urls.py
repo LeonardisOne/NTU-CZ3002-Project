@@ -23,4 +23,5 @@ urlpatterns = [
     path('<str:pk>/<str:pq>/publish/', views.publish_chapter, name='publish_chapter'),
     path('<m_name>/<ch_name>/start_quiz/',views.start_question, name='start_question'),
     path('<m_name>/<ch_name>/<int:q_num>/',views.view_question, name='view_question'),
+    path('<m_name>/<ch_name>/view_result/', views.view_chapter_result, name='view_result'),
 ]

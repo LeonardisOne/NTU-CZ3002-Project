@@ -12,6 +12,7 @@
             <h3><a href="{{ question.get_absolute_url }}">{{question.question_name}} </a>
             </h3>
         {% endfor %}
+        <a href="{% url 'appOne:view_result' m_name=m_name ch_name=ch_name %}"> View Results </a>
     </div>
   </div>
 {% endblock %}
