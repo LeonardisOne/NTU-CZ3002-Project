@@ -137,8 +137,8 @@ def add_chapter(request, pk):
                 chapter.save()
 
                 # return HttpResponseRedirect(reverse('index'))
-                # return redirect('appOne:prof_page')
-                return redirect(f'/appOne/modules/{pk}/manage_chapter/')
+                # return redirect(f'/appOne/modules/{pk}/manage_chapter/')
+                return redirect('/appOne/prof')
         else:
             form = AddChapterForm()
 
@@ -187,7 +187,7 @@ def delete_module(request, module_pk):
     if prof == module_stored.coordinator :
         module_stored.delete()
 
-        return redirect('/appOne/manage_module/')
+        return redirect('/appOne/prof/')
     else:
         raise Http404(u"Access Denied")
 
@@ -205,7 +205,8 @@ def delete_chapter(request, module_pk, chapter_name):
         print(chapter_stored)
         chapter_stored.delete()
         # return render(request, 'appOne/delete_chapter.html')
-        return redirect(f'/appOne/modules/{module_pk}/manage_chapter/')
+        # return redirect(f'/appOne/modules/{module_pk}/manage_chapter/')
+        return redirect('/appOne/prof/')
     else:
         raise Http404(u"Access Denied")
 
@@ -343,9 +344,53 @@ def start_question(request, ch_name, m_name):
 
     context = {
         'qn_list': qn_list,
+        'ch_name': ch_name,
+        'm_name': m_name
     }
 
     return render(request,'appOne/start_quiz.html', context)
+
+@permission_required('appOne.can_try_qn', raise_exception=True)
+def view_chapter_result(request, ch_name, m_name):
+    module_stored = get_object_or_404(Module, module_name=m_name)
+    chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=ch_name)
+
+    student = Student.objects.get(user=request.user)
+    try:
+        team = student.joined_teams.get(chapter=chapter_stored)
+    except:
+        raise Http404(u"Access Denied")
+
+    total_tried = len(team.qn_tried)
+    qn_list = Question.objects.filter(chapter=chapter_stored)
+    if total_tried != len(qn_list): #can change to check less than/more than separately
+        raise Http404(u"Your team has not completed all questions!")
+
+    qn_sol_list = []
+    for question in qn_list:
+        qn_sol = [question]
+        solution = Solution.objects.get(question=question)
+        qn_sol.append(solution)
+        qn_sol_list.append(qn_sol)
+
+    score = 0
+    for index, ans in enumerate(team.qn_results):
+        if ans == '1':
+            score += 1
+            qn_sol_list[index].append("Correct")
+        else:
+            qn_sol_list[index].append("Wrong")
+
+    percent_score = format((score/total_tried)*100, '.1f')
+
+    context = {
+        'qn_sol_list': qn_sol_list,
+        'score': score,
+        'total_tried': total_tried,
+        'percent_score': percent_score,
+    }
+
+    return render(request,'appOne/quiz_results.html', context)
 
 @permission_required('appOne.can_try_qn', raise_exception=True)
 def view_question(request, q_num, ch_name, m_name):
@@ -361,6 +406,8 @@ def view_question(request, q_num, ch_name, m_name):
 
     if len(team.qn_tried) + 1 < q_num :
         raise Http404(u"Please do questions in order")
+    elif len(team.qn_tried) + 1 > q_num :
+        raise Http404(u"You already done this question")
 
     if request.method == 'POST':
         ans_return = request.POST.get('ans_return')
@@ -423,6 +470,8 @@ def view_question(request, q_num, ch_name, m_name):
         }
 
     return render(request, 'appOne/quiz.html', context)
+
+
 @login_required
 def chat(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
