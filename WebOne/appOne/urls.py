@@ -24,6 +24,7 @@ urlpatterns = [
     path('<m_name>/<ch_name>/start_quiz/',views.start_question, name='start_question'),
     path('<m_name>/<ch_name>/<int:q_num>/',views.view_question, name='view_question'),
     path('<m_name>/<ch_name>/view_result/', views.view_chapter_result, name='view_result'),
+    path('<m_name>/<ch_name>/<int:q_num>/addsolution/',views.add_solution, name='add_solution'),
 ]
 """
 urlpatterns = [

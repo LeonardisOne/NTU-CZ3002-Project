@@ -42,6 +42,14 @@ class AddQuestionForm(forms.ModelForm):
                     'question_optionC': 'Option C',
                     'question_optionD': 'Option D' }
 
+class AddSolutionForm(forms.ModelForm):
+    class Meta:
+        model = Solution
+        # fields = '__all__'
+        exclude = ['question']
+        labels = {'solution_answer': 'Correct Answer',
+                    'solution_explanation': 'Explanation'}
+
 class PublishChapterForm(forms.Form):
     end_datetime = forms.DateTimeField(label="Date to end chapter")
 

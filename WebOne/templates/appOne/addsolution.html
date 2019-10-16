@@ -1,0 +1,19 @@
+{% extends "appOne/base.html" %}
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h1>Add Solution to {{ question.question_number }}</h1>
+
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" name="" value="Add Solution">
+        </form>
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -180,6 +180,34 @@ def add_question(request, pk, pq):
     else:
         raise Http404(u"Access Denied")
 
+@permission_required('appOne.add_solution', raise_exception=True)
+def add_solution(request, m_name, ch_name, q_num):
+    module_stored = get_object_or_404(Module, module_name=m_name)
+    prof = Professor.objects.get(user=request.user)
+    if prof == module_stored.coordinator :
+        chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=ch_name)
+        question_stored = get_object_or_404(Question, chapter=chapter_stored, question_number=q_num)
+        if request.method == 'POST':
+            form = AddSolutionForm(request.POST)
+
+            if form.is_valid():
+                solution = form.save(commit=False)
+                solution.question = question_stored
+                solution.save()
+                return redirect(f'/appOne/modules/{m_name}/chapters/{ch_name}/manage_question/')
+
+        else:
+            form = AddSolutionForm()
+
+        context = {
+            'form': form,
+            'question': question_stored
+        }
+
+        return render(request, 'appOne/addsolution.html', context)
+    else:
+        raise Http404(u"Access Denied")
+
 @permission_required('appOne.delete_module', raise_exception=True)
 def delete_module(request, module_pk):
     module_stored = Module.objects.get(module_name=module_pk)
