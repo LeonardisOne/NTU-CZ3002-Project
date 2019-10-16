@@ -21,7 +21,8 @@ urlpatterns = [
     path('modules/delete_question/<module_pk>/<chapter_name>/<question_name>',views.delete_question, name="delete_question"),
     path('modules/delete_module/<module_pk>/',views.delete_module, name='delete_module'),
     path('modules/<str:pk>/chapters/<str:pq>/publish/', views.publish_chapter, name='publish_chapter'),
-    path('<m_name>/<ch_name>/<int:q_num>/',views.start_question, name='start_question'),
+    path('<m_name>/<ch_name>/start_quiz/',views.start_question, name='start_question'),
+    path('<m_name>/<ch_name>/<int:q_num>/',views.view_question, name='view_question'),
     path('<m_name>/<ch_name>/view_result/', views.view_chapter_result, name='view_result'),
 ]
 """
