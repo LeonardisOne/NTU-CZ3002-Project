@@ -309,7 +309,7 @@ function display()
               <p> Prof Ken </p>
           </div>
           <div class="flex-container-btn">
-              <a href="addQns.html">
+              <a href="{% url 'appOne:chapter_home' pq=chapter.chapter_name pk=module.module_name %}">
                   <button class="flex-btn link">
                       Edit
                   </button>
