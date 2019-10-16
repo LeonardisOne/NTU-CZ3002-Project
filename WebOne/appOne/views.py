@@ -85,10 +85,10 @@ def user_login(request):
                 login(request,user)
 
                 if user.groups.filter(name = 'Professors').exists():
-                    return prof_page(request)
+                    return HttpResponseRedirect(reverse('appOne:prof_page'))
 
                 elif user.groups.filter(name = 'Students').exists():
-                    return student_page(request)
+                    return HttpResponseRedirect(reverse('appOne:student_page'))
 
                 return HttpResponseRedirect(reverse('index')) #back to home page
 
@@ -247,6 +247,7 @@ def manage_question(request, pk, pq):
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
 
+@login_required
 def prof_page(request):
 
     prof = Professor.objects.get(user=request.user)
@@ -265,6 +266,7 @@ def prof_page(request):
 
     return render(request,'appOne/prof.html', context)
 
+@login_required
 def student_page(request):
     student = Student.objects.get(user=request.user)
     modules_taken = student.modules_taken.all()
@@ -280,7 +282,7 @@ def student_page(request):
 
     return render(request,'appOne/student.html',context)
 
-#@permission_required('appOne.can_publish_chapter', raise_exception=True)
+@permission_required('appOne.can_publish_chapter', raise_exception=True)
 def publish_chapter(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
     prof = Professor.objects.get(user=request.user)
@@ -309,7 +311,7 @@ def publish_chapter(request, pk, pq):
                         'type' : 'public'
                     })
 
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('appOne:prof_page'))
 
         else:
             form = PublishChapterForm()
@@ -427,7 +429,8 @@ def view_question(request, q_num, ch_name, m_name):
         print(team.qn_results)
         team.save()
 
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('appOne:start_question', kwargs={'m_name': m_name,
+                                        'ch_name': ch_name}))
 
     else:
         students = team.student_set.all()

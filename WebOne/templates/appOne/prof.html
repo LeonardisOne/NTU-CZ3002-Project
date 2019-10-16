@@ -285,7 +285,11 @@ function display()
         <div class="right">
             <a href="{% url 'logout' %}">Logout
             </a>
-    </div>
+        </div>
+        <div class="right">
+            <a href="{% url 'appOne:add_module' %}">Add Module
+            </a>
+        </div>
     </div>
     {% load staticfiles %}
     {% for module in module_list %}
