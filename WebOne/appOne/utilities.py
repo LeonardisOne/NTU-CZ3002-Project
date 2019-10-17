@@ -2,6 +2,9 @@ import math, random
 from .models import ChapterTeam, Student
 
 def create_teams(chapter, alr_started):
+    print(alr_started)
+    print(chapter.can_start)
+
     if alr_started==False and chapter.can_start==True:
         print('creating')#debug
         students=chapter.module.student_set.all()
@@ -16,7 +19,7 @@ def create_teams(chapter, alr_started):
             team_list.append(team_created)
             team_no += 1
             num_teams -= 1
-        
+
         #team_list = ChapterTeam.objects.filter(chapter=chapter)
         print(team_list)#debug
 
@@ -26,7 +29,7 @@ def create_teams(chapter, alr_started):
             for student in students_inside:
                 student.joined_teams.add(team)
                 students = students.exclude(pk=student.pk)
-            
+
             num_students -= min(5, num_students)
 
         return team_list

@@ -494,11 +494,25 @@ def view_question(request, q_num, ch_name, m_name):
         else:
             print("error")
 
-        context = {
-            'display_str' : display_str,
-            'haveQuestion' : haveQuestion,
-            'optionStr' : optionStr,
-        }
+    uid = request.user.username
+    try:
+        auth.create_user(uid=uid)
+        print("add user")
+    except:
+        print("Existing user")
+    custom_token = (auth.create_custom_token(uid)).decode()
+
+    student = Student.objects.get(user=request.user)
+    team = student.joined_teams.get(chapter=chapter_stored)
+    room_id = team.room_id
+
+    context = {
+        'display_str' : display_str,
+        'haveQuestion' : haveQuestion,
+        'optionStr' : optionStr,
+        'custom_token' : custom_token,
+        'room_id' : room_id,
+    }
 
     return render(request, 'appOne/quiz.html', context)
 

@@ -6,13 +6,15 @@
     <div class="jumbotron">
         <h1>List of Questions</h1>
           {% for question in question_list %}
-              <h3>{{question.question_name}} 
+              <h3>{{question.question_name}}
                 <a href="{% url 'appOne:add_solution' m_name=module_pk ch_name=chapter_name q_num=question.question_number %}">Add Solution</a>
                 <a href="{% url 'appOne:delete_question' question_name=question.question_name chapter_name=chapter_name module_pk=module_pk %}">Delete</a></h3>
 
           {% endfor %}
 
         <a href="{% url 'appOne:add_question' pk=module_pk pq=chapter_name %}">Add Question </a>
+        <br>
+        <a href="{% url 'appOne:publish_chapter' pk=module_pk pq=chapter_name %}">Publish chapter!</a>
     </div>
   </div>
 {% endblock %}

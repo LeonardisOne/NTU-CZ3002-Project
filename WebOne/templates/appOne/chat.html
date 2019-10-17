@@ -79,7 +79,7 @@
             };
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
-        
+
             firebase.auth().signInWithCustomToken("{{ custom_token }}").catch(function(error) {
               console.log("Error authenticating user:", error);
             });

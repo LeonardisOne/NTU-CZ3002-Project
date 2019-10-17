@@ -1,9 +1,52 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+      <meta charset="utf-8" />
 
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+        <!-- jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+        <!-- Firechat -->
+        <link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+        <script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
     <style>
+      /* Button used to open the chat form - fixed at the bottom of the page */
+      .open-button {
+        background-color: #555;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+        position: fixed;
+        bottom: 23px;
+        right: 28px;
+        width: 280px;
+      }
+      #firechat-wrapper {
+        display: none;
+        height: 475px;
+        max-width: 325px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin: 50px auto;
+        text-align: center;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 5px 25px #666;
+        -moz-box-shadow: 0 5px 25px #666;
+        box-shadow: 0 5px 25px #666;
+        position: fixed;
+        bottom: 23px;
+        right: 28px;
+        width: 280px;
+      }
         .optBtn{
             height: 100px;
             width: 500px;
@@ -61,7 +104,8 @@
 
     </head>
     <body>
-
+    <button class="open-button" onclick="openForm()">Chat</button>
+    <div id="firechat-wrapper"></div>
     <button class="back" onclick="goBack()"><</button>
 
         <script>
@@ -103,5 +147,44 @@
 //            get answer from here to pass to database
 
         }
+
+        function openForm() {
+          document.getElementById("firechat-wrapper").style.display = "block";
+        }
+        // Initialize Firebase SDK
+        var firebaseConfig = {
+                  apiKey: "AIzaSyC1SSbgF0CK-SaJ7wbbCMZho2UGaAA2qR0",
+                  authDomain: "cz3002.firebaseapp.com",
+                  databaseURL: "https://cz3002.firebaseio.com"
+              };
+              // Initialize Firebase
+              firebase.initializeApp(firebaseConfig);
+
+              firebase.auth().signInWithCustomToken("{{ custom_token }}").catch(function(error) {
+                console.log("Error authenticating user:", error);
+              });
+
+        // Get a reference to the Firebase Realtime Database
+        var chatRef = firebase.database().ref();
+
+        // Create an instance of Firechat
+        var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+
+        // Listen for authentication state changes
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // If the user is logged in, set them as the Firechat user
+            chat.setUser(user.uid, user.uid);
+            setTimeout(function() {
+              chat._chat.enterRoom("{{ room_id }}")
+            }, 500);
+          } else {
+            // If the user is not logged in, sign them in anonymously
+            firebase.auth().signInAnonymously().catch(function(error) {
+              console.log("Error signing user in anonymously:", error);
+            });
+          }
+        });
+
     </script>
 </html>
