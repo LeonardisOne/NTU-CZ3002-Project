@@ -300,7 +300,7 @@ def student_page(request):
     modules_taken = student.modules_taken.all()
     chapters_all_mods = []
     for module in modules_taken:
-        mod_chapters = Chapter.objects.filter(module=module)
+        mod_chapters = Chapter.objects.filter(module=module, can_start=True)
         chapters_all_mods.append(mod_chapters)
 
     context = {
@@ -368,7 +368,7 @@ def start_question(request, ch_name, m_name):
     try:
         team = student.joined_teams.get(chapter=chapter_stored)
     except:
-        raise Http404(u"Access Denied")
+        raise Http404(u"Access Denied! This chapter is not available to you.")
 
     qn_list = Question.objects.filter(chapter=chapter_stored)
 
