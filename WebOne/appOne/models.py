@@ -104,7 +104,7 @@ class Solution(models.Model):
     solution_answer = models.CharField(max_length=50)
     solution_explanation = models.CharField(max_length=50)
 
-    question = models.ForeignKey('Question',on_delete=models.CASCADE)
+    question = models.OneToOneField('Question',on_delete=models.CASCADE)
     class Meta:
         permissions = (("can_modify_solution","Can create/delete a solution"),)
 

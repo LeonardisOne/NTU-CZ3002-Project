@@ -192,7 +192,10 @@ def add_solution(request, m_name, ch_name, q_num):
     if prof == module_stored.coordinator :
         chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=ch_name)
         question_stored = get_object_or_404(Question, chapter=chapter_stored, question_number=q_num)
-        if request.method == 'POST':
+
+        if hasattr(question_stored, 'solution'):
+            raise Http404(u"Already added solution!")
+        elif request.method == 'POST':
             form = AddSolutionForm(request.POST)
 
             if form.is_valid():
