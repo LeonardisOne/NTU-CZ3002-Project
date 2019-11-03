@@ -157,7 +157,10 @@ def add_question(request, pk, pq):
     prof = Professor.objects.get(user=request.user)
     if prof == module_stored.coordinator :
         chapter_stored = get_object_or_404(Chapter, module = module_stored, chapter_name=pq)
-        if request.method == 'POST':
+        
+        if chapter_stored.can_start:
+            raise Http404(u"Already published")
+        elif request.method == 'POST':
             form = AddQuestionForm(request.POST)
 
             if form.is_valid():
