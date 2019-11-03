@@ -14,7 +14,9 @@
 
         <a href="{% url 'appOne:add_question' pk=module_pk pq=chapter_name %}">Add Question </a>
         <br>
-        <a href="{% url 'appOne:publish_chapter' pk=module_pk pq=chapter_name %}">Publish chapter!</a>
+        {% if chapter.can_start is False %}
+          <a href="{% url 'appOne:publish_chapter' pk=module_pk pq=chapter_name %}">Publish chapter!</a>
+        {% endif %}
     </div>
   </div>
 {% endblock %}

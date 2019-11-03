@@ -271,7 +271,13 @@ def manage_question(request, pk, pq):
     module_stored = get_object_or_404(Module, module_name=pk)
     chapter_stored = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
     question_list = Question.objects.filter(chapter=chapter_stored)
-    return render(request, 'appOne/manage_question.html',{'module_pk': pk, 'chapter_name': pq, 'question_list': question_list})
+    context = {
+        'module_pk': pk, 
+        'chapter_name': pq, 
+        'question_list': question_list,
+        'chapter': chapter_stored
+        }
+    return render(request, 'appOne/manage_question.html',context)
 # def view_module(request):
 #     return render(request,'appOne/view_module.html',{})
 
@@ -317,7 +323,9 @@ def publish_chapter(request, pk, pq):
     if prof == module_stored.coordinator :
         chapter_published = get_object_or_404(Chapter, module=module_stored, chapter_name=pq)
 
-        if request.method == 'POST':
+        if chapter_published.can_start:
+            raise Http404(u"Already published")
+        elif request.method == 'POST':
             form = PublishChapterForm(request.POST)
 
             if form.is_valid():
