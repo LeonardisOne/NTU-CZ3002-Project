@@ -162,6 +162,8 @@ def add_question(request, pk, pq):
 
             if form.is_valid():
                 question = form.save(commit=False)
+                question.question_number = Question.objects.filter(chapter=chapter_stored).count() + 1
+                print(question.question_number)
                 question.chapter = chapter_stored
                 question.save()
                 print(question.pk)

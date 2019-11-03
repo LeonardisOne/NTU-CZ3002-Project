@@ -35,7 +35,7 @@ class AddQuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         # fields = '__all__'
-        exclude = ['chapter']
+        exclude = ['chapter', 'question_number']
         labels = {'question_name' : 'Question statement',
                     'question_optionA': 'Option A',
                     'question_optionB': 'Option B',
